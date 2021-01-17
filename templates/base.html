@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="IndoUi – Bootstrap 4 Admin Dashboard HTML Template" name="description">
+    <meta content="Spruko Technologies Private Limited" name="author">
+    <meta name="keywords"
+        content="admin, admin dashboard template, admin panel template, admin template, best bootstrap admin template, bootstrap 4 admin template, bootstrap 4 dashboard template, bootstrap admin template, bootstrap dashboard template, html admin template, html5 dashboard template, html5 admin template, modern admin template, simple admin template, template admin bootstrap 4" />
+    {% load static %}
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'images/brand/favicon.ico' %}" type="image/x-icon" />
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/brand/favicon.ico' %}" />
+
+    <Title>
+        {% block title %}
+        {% endblock %}
+    </Title>
+
+    <!--Bootstrap css-->
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap/css/bootstrap.min.css' %}">
+
+    <!--Style css -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/dark-style.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/skin-modes.css' %}" rel="stylesheet">
+
+    <!-- P-scrollbar css-->
+    <link href="{% static 'plugins/p-scrollbar/p-scrollbar.css' %}" rel="stylesheet" />
+
+    <!-- Sidemenu css -->
+    <link href="{% static 'plugins/sidemenu/closed-sidemenu.css' %}" rel="stylesheet" />
+
+    <!--Daterangepicker css-->
+    <link href="{% static 'plugins/bootstrap-daterangepicker/daterangepicker.css' %}" rel="stylesheet" />
+
+    <!-- Rightsidebar css -->
+    <link href="{% static 'plugins/sidebar/sidebar.css' %}" rel="stylesheet">
+
+    <!---Icons css-->
+    <link href="{% static 'css/icons.css' %}" rel="stylesheet" />
+
+    {% block css %}
+    {% endblock %}
+</head>
+
+<body class="app sidebar-mini dark-mode">
+
+    <!--Global-Loader-->
+    <div id="global-loader">
+        <img src="{% static 'images/loader.svg' %}" alt="loader">
+    </div>
+
+    <div class="page">
+        <div class="page-main">
+
+            <!--app-header-->
+            <div class="app-header header d-flex navbar-collapse">
+                <div class="container-fluid">
+                    <div class="d-flex">
+                        <a class="header-brand" href="/">
+                            <img src="{% static 'images/brand/logo.png' %}" class="header-brand-img main-logo"
+                                alt="IndoUi logo">
+                            <img src="{% static 'images/brand/logo-light.png' %}"
+                                class="header-brand-img dark-main-logo" alt="IndoUi logo">
+                            <img src="{% static 'images/brand/icon-light.png' %}"
+                                class="header-brand-img dark-icon-logo" alt="IndoUi logo">
+                            <img src="{% static 'images/brand/icon.png' %}" class="header-brand-img icon-logo"
+                                alt="IndoUi logo">
+                        </a><!-- logo-->
+                        <div class="app-sidebar__toggle" data-toggle="sidebar">
+                            <a class="open-toggle" href="#"><i class="fe fe-align-left"></i></a>
+                            <a class="close-toggle" href="#"><i class="fe fe-x"></i></a>
+                        </div>
+                        <div class="d-flex order-lg-2 ml-auto header-right">
+                            <div class="d-md-flex header-search" id="bs-example-navbar-collapse-1">
+                                <form class="navbar-form" role="search">
+                                    <div class="input-group ">
+                                        <input type="text" class="form-control" placeholder="Search...">
+                                        <span class="input-group-btn">
+                                            <button type="reset" class="btn btn-default">
+                                                <i class="fe fe-x"></i>
+                                            </button>
+                                            <button type="submit" class="btn btn-default">
+                                                <i class="fe fe-search"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- Search -->
+                            <div class="d-md-flex">
+                                <a href="#" class="nav-link icon full-screen-link">
+                                    <i class="fe fe-minimize fullscreen-button"></i>
+                                </a>
+                            </div>
+                            <!--Navbar -->
+                            {% if request.user.is_authenticated %}
+                            <div class="dropdown header-profile">
+                                <a class="nav-link pr-0 leading-none d-flex pt-1" data-toggle="dropdown" href="#">
+                                    <span class="avatar avatar-md brround cover-image"
+                                        data-image-src="{% static 'images/users/female/2.jpg' %}"></span>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                    <div class="drop-heading">
+                                        <div class="text-center">
+                                            <h5 class="text-dark mb-1">{{ request.user.username }}</h5>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown-divider m-0"></div>
+                                    <a class="dropdown-item" href="#"><i
+                                            class="dropdown-icon fe fe-user"></i>Profile</a>
+                                    <a class="dropdown-item" href="/accounts/logout"><i class="dropdown-icon fe fe-power"></i> Log
+                                        Out</a>
+                                    <div class="dropdown-divider"></div>
+                                    <div class="text-center dropdown-btn pb-3">
+                                        <div class="btn-list">
+                                            <a href="#" class="btn btn-icon btn-facebook btn-sm"><i
+                                                    class="icon icon-social-facebook"></i></a>
+                                            <a href="#" class="btn btn-icon btn-twitter btn-sm"><i
+                                                    class="icon icon-social-twitter"></i></a>
+                                            <a href="#" class="btn btn-icon btn-instagram btn-sm"><i
+                                                    class="icon icon-social-instagram"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% else %}
+                            <div class="btn">
+                                <a href="/accounts/login" class="btn btn-primary">Log In</a>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--app-header end-->
+
+            <!-- Sidebar menu-->
+            <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
+            <aside class="app-sidebar toggle-sidebar">
+                <ul class="side-menu toggle-menu">
+                    <li>
+                        {% if request.user.is_authenticated %}
+                        {% else %}
+                    <li>
+                        <a class="side-menu__item" href="/accounts/login"><span
+                                class="side-menu__label btn btn-primary">Log In</span></a>
+                        <a class="side-menu__item" href="/accounts/signup"><span
+                                class="side-menu__label btn btn-primary">Sign Up</span></a>
+                    </li>
+                    {% endif %}
+                    </li>
+                    <li>
+                        <h3>Main</h3>
+                    </li>
+                    <li class="slide">
+                        <a class="side-menu__item" data-toggle="slide" href="#"><i
+                                class="side-menu__icon fe fe-airplay"></i><span
+                                class="side-menu__label">Dashboard</span><i class="angle fa fa-angle-right"></i></a>
+                        <ul class="slide-menu">
+                            <li><a class="slide-item" href="index.html"><span>Analytics Dashboard</span></a></li>
+                            <li><a class="slide-item" href="index2.html"><span>E-Commerce Dashboard</span></a></li>
+                            <li><a class="slide-item" href="index3.html"><span>Sales Dashboard</span></a></li>
+                            <li><a class="slide-item" href="index4.html"><span>IT Dashboard</span></a></li>
+                            <li><a class="slide-item" href="index5.html"><span>Logistics Dashboard</span></a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="side-menu__item" href="widgets.html"><i
+                                class="side-menu__icon fe fe-codepen"></i><span
+                                class="side-menu__label">Widgets</span></a>
+                    </li>
+                    <li class="slide">
+                        <a class="side-menu__item" data-toggle="slide" href="#"><i
+                                class="side-menu__icon fe fe-file-text"></i><span
+                                class="side-menu__label">Forms</span><i class="angle fa fa-angle-right"></i></a>
+                        <ul class="slide-menu">
+                            <li><a href="form-elements.html" class="slide-item"> Form Elements</a></li>
+                            <li><a href="form-wizard.html" class="slide-item"> Form Wizard</a></li>
+                            <li><a href="wysiwyag.html" class="slide-item"> Form Editor</a></li>
+                        </ul>
+                    </li>
+                    <li class="slide">
+                        <a class="side-menu__item" data-toggle="slide" href="#"><i
+                                class="side-menu__icon fe fe-bar-chart-2"></i><span
+                                class="side-menu__label">Charts</span><i class="angle fa fa-angle-right"></i></a>
+                        <ul class="slide-menu">
+                            <li><a href="chart-chartist.html" class="slide-item">Chartist Charts</a></li>
+                            <li><a href="chart-morris.html" class="slide-item"> Morris Charts</a></li>
+                            <li><a href="chart-js.html" class="slide-item"> Charts js</a></li>
+                            <li><a href="chart-peity.html" class="slide-item"> Pie Charts</a></li>
+                            <li><a href="chart-echart.html" class="slide-item"> Echart Charts</a></li>
+                            <li><a href="chart-flot.html" class="slide-item"> Flot Charts</a></li>
+                            <li><a href="chart-nvd3.html" class="slide-item"> Nvd3 Charts</a></li>
+                            <li><a href="chart-dygraph.html" class="slide-item">Dygraph Charts</a></li>
+                        </ul>
+                    </li>
+                    <li class="slide">
+                        <a class="side-menu__item" data-toggle="slide" href="#"><i
+                                class="side-menu__icon fe fe-layout"></i><span class="side-menu__label">Tables</span><i
+                                class="angle fa fa-angle-right"></i></a>
+                        <ul class="slide-menu">
+                            <li><a href="tables.html" class="slide-item">Default table</a></li>
+                            <li><a href="datatable.html" class="slide-item"> Data Tables</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </aside>
+            <!--sidemenu end-->
+
+            <!-- app-content-->
+            <div class="app-content toggle-content">
+                <div class="side-app">
+                    <div class="page-header">
+                        <h1 class="page-title">
+                            {% block page_header %}
+                            {% endblock %}
+                        </h1>
+                    </div>
+                    {% block body %}
+                    {% endblock %}
+                </div>
+            </div>
+            <!-- End app-content-->
+
+            <!--Footer-->
+            <footer class="footer side-footer">
+                <div class="container">
+                    <div class="row align-items-center flex-row-reverse">
+                        <div class="col-lg-12 col-sm-12   text-center">
+                            Copyright © 2021 <a href="#">Anupam Samanta</a>. All rights reserved.
+                        </div>
+                    </div>
+                </div>
+            </footer>
+            <!-- End Footer-->
+
+        </div>
+    </div>
+    <!-- End Page -->
+
+    <!-- Back to top -->
+    <a href="#top" id="back-to-top"><i class="fa fa-angle-up"></i></a>
+
+    <!-- Jquery js-->
+    <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+
+    <!--Bootstrap.min js-->
+    <script src="{% static 'plugins/bootstrap/js/popper.min.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+
+    <!--Jquery Sparkline js-->
+    <script src="{% static 'js/jquery.sparkline.min.js' %}"></script>
+
+    <!-- Chart Circle js-->
+    <script src="{% static 'js/circle-progress.min.js' %}"></script>
+
+    <!-- Star Rating js-->
+    <script src="{% static 'plugins/rating/jquery.rating-stars.js' %}"></script>
+
+    <!--Moment js-->
+    <script src="{% static 'plugins/moment/moment.min.js' %}"></script>
+
+    <!--Time Counter js-->
+    <script src="{% static 'plugins/counters/jquery.missofis-countdown.js' %}"></script>
+    <script src="{% static 'plugins/counters/counter.js' %}"></script>
+
+    <!-- Daterangepicker js-->
+    <script src="{% static 'plugins/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
+
+    <!--Side-menu js-->
+    <script src="{% static 'plugins/sidemenu/sidemenu.js' %}"></script>
+
+    <!-- P-scrollbar js-->
+    <script src="{% static 'plugins/p-scrollbar/p-scrollbar.js' %}"></script>
+    <script src="{% static 'plugins/p-scrollbar/p-scrollbar-leftmenu.js' %}"></script>
+
+    <!-- Rightsidebar js -->
+    <script src="{% static 'plugins/sidebar/sidebar.js' %}"></script>
+
+    <!-- Custom js-->
+    <script src="{% static 'js/custom.js' %}"></script>
+
+    {% block js %}
+    {% endblock %}
+
+</body>
+
+</html>
