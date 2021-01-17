@@ -55,21 +55,25 @@
                                     {% csrf_token %}
                                     <div class="card-body">
                                         <div class="text-center mb-6">
-                                            <img src="{% static 'images/brand/logo.png' %}"
-                                                class="header-brand-img main-logo" alt="IndoUi logo">
-                                            <img src="{% static 'images/brand/logo-light.png' %}"
-                                                class="header-brand-img dark-main-logo" alt="IndoUi logo">
+                                            <a href="/">
+                                                <img src="{% static 'images/brand/logo.png' %}"
+                                                    class="header-brand-img main-logo" alt="IndoUi logo">
+                                                <img src="{% static 'images/brand/logo-light.png' %}"
+                                                    class="header-brand-img dark-main-logo" alt="IndoUi logo">
+                                            </a>
                                         </div>
                                         <h3>Login</h3>
                                         <p class="text-muted">Sign In to your account</p>
                                         <div class="input-group mb-3">
                                             <span class="input-group-addon bg-white"><i class="fa fa-user"></i></span>
-                                            <input type="text" class="form-control" placeholder="Username" name="username">
+                                            <input type="text" class="form-control" placeholder="Username"
+                                                name="username">
                                         </div>
                                         <div class="input-group mb-4">
                                             <span class="input-group-addon bg-white"><i
                                                     class="fa fa-unlock-alt"></i></span>
-                                            <input type="password" class="form-control" placeholder="Password" name="password">
+                                            <input type="password" class="form-control" placeholder="Password"
+                                                name="password">
                                         </div>
                                         <div class="row">
                                             <div class="col-12">
@@ -84,7 +88,7 @@
                                             </div>
                                             <div class="col-12">
                                                 <p>Not a registered user?</p>
-                                                <a href="forgot-password.html"
+                                                <a href="/accounts/signup"
                                                     class="btn btn-link box-shadow-0 px-0">Create an account</a>
                                             </div>
                                         </div>
