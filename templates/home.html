@@ -1,3 +1,37 @@
 {% extends 'base.html' %}
 
 
+{% block title %}
+home {{ message }}
+{% endblock %}
+
+{% load static %}
+
+{% block body %}
+<!-- Row -->
+<div class="row">
+    <div class="col-md-12 col-lg-4 col-md-4 col-xl-4">
+        <div class="card overflow-hidden">
+            <img src="{% static 'images/photos/12.jpg' %}" alt="image">
+            <div class="card-body">
+                <h5 class="card-title mb-2">World Chat</h5>
+                <p class="card-text text-muted">World chat is a chat room used by people from all around the world to
+                    chat with each other. Find people and make them friends.</p>
+                <a href="/worldchat/" class="btn btn-primary">Go</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 col-lg-4 col-md-4 col-xl-4">
+        <div class="card overflow-hidden">
+            <img src="{% static 'images/photos/2.jpg' %}" alt="image">
+            <div class="card-body">
+                <h5 class="card-title mb-2">Card title</h5>
+                <p class="card-text text-muted">One disadvantage of Lorum Ipsum is that in Latin certain letters appear
+                    more frequently than others.</p>
+                <a href="javascript:void(0);" class="btn btn-primary">View More</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Row -->
+{% endblock %}
