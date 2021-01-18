@@ -5,6 +5,7 @@ from .models import Token
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
 from django.contrib.auth.decorators import login_required
+from django.http.response import HttpResponseRedirect
 
 
 def user_login(request):
@@ -17,7 +18,10 @@ def user_login(request):
             user = authenticate(request, username=request.POST['username'], password=request.POST['password'])
             if user is not None:
                 login(request, user)
-                return redirect('home')
+                try:
+                    return HttpResponseRedirect(request.GET['next'])
+                except:
+                    return redirect('home')
             else:
                 return render(request, 'login.html', {'message': 'Invalid Credentials'})
             return render(request, 'login.html')
