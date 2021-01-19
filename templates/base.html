@@ -112,7 +112,8 @@
                                     <div class="dropdown-divider m-0"></div>
                                     <a class="dropdown-item" href="#"><i
                                             class="dropdown-icon fe fe-user"></i>Profile</a>
-                                    <a class="dropdown-item" href="/accounts/logout"><i class="dropdown-icon fe fe-power"></i> Log
+                                    <a class="dropdown-item" href="/accounts/logout"><i
+                                            class="dropdown-icon fe fe-power"></i> Log
                                         Out</a>
                                     <div class="dropdown-divider"></div>
                                     <div class="text-center dropdown-btn pb-3">
@@ -146,10 +147,10 @@
                         {% if request.user.is_authenticated %}
                         {% else %}
                     <li>
-                        <a class="side-menu__item" href="/accounts/login"><span
-                                class="btn btn-primary btn-block">Log In</span></a>
-                        <a class="side-menu__item" href="/accounts/signup"><span
-                                class="btn btn-primary btn-block">Sign Up</span></a>
+                        <a class="side-menu__item" href="/accounts/login"><span class="btn btn-primary btn-block">Log
+                                In</span></a>
+                        <a class="side-menu__item" href="/accounts/signup"><span class="btn btn-primary btn-block">Sign
+                                Up</span></a>
                     </li>
                     {% endif %}
                     </li>
@@ -220,6 +221,20 @@
                             {% endblock %}
                         </h1>
                     </div>
+                    {% if request.user.is_authenticated %}
+                    {% if not request.user.email %}
+                    <div>
+                        <div class="alert alert-warning">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            <strong>Email Confirmation Pending</strong>
+                            <hr class="message-inner-separator">
+                            <p>Please confirm your email address or <a href="/accounts/registeremail/"
+                                class="btn btn-link box-shadow-0 px-0">register from here</a> to get full access to this site. Check your
+                                email for confirmation.</p>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endif %}
                     {% block body %}
                     {% endblock %}
                 </div>

@@ -54,9 +54,11 @@ Sign Up
                                                 <input type="email" name="email" class="form-control"
                                                     placeholder="Enter Your Email" value="{{ email }}" />
                                                 {% if emessage %}
-                                                <p style="color: rgb(255, 52, 52);">{{ emessage }} <a
+                                                <p style="color: rgb(255, 52, 52);">{{ emessage }}<a
                                                         href="/accounts/forgotpassword/"
-                                                        class="btn btn-link box-shadow-0 px-0">Forgot password?</a></p>
+                                                        class="btn btn-link box-shadow-0 px-0">Forgot password?</a><a
+                                                        href="/accounts/login/"
+                                                        class="btn btn-link box-shadow-0 px-0">Login?</a></p>
                                                 {% endif %}
                                             </div>
                                         </div>

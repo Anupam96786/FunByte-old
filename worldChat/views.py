@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
 
@@ -8,4 +8,7 @@ def index(request):
 
 @login_required
 def chat(request):
-    return render(request, 'wc_chat.html')
+    if request.user.email:
+        return render(request, 'wc_chat.html')
+    else:
+        return redirect('world_chat')

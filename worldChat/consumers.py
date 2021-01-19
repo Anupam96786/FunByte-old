@@ -11,7 +11,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.channel_name
         )
 
-        await self.accept()
+        if self.scope['user'].is_authenticated:
+            if self.scope['user'].email:
+                await self.accept()
+            else:
+                await self.close()
+        else:
+            await self.close()
 
     async def disconnect(self, close_code):
         # Leave room group

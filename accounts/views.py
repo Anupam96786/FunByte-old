@@ -37,28 +37,29 @@ def user_signup(request):
             return render(request, 'signup.html', {'emessage': 'This email is already registered.', 'username': username,
                 'email': request.POST['email'], 'firstname': request.POST['firstname'], 'lastname': request.POST['lastname']})
         elif User.objects.filter(username=username).exists():
-            return render(request, 'signup.html', {'umessage': 'This username already exists. Tyr using another username.',
+            return render(request, 'signup.html', {'umessage': 'This username already exists. Try using another username.',
                 'username': username, 'email': request.POST['email'],
                 'firstname': request.POST['firstname'], 'lastname': request.POST['lastname']})
         else:
             user = User.objects.create_user(
-                username=username, password=request.POST['password'], email=request.POST['email'],
-                first_name=request.POST['firstname'], last_name=request.POST['lastname'], is_active=False
+                username=username, password=request.POST['password'],
+                first_name=request.POST['firstname'], last_name=request.POST['lastname']
                 )
-            token = Token.objects.create(user=user, purpose='ua').token
+            login(request, user)
+            token = Token.objects.create(user=user, purpose='ec', email=request.POST['email']).token
             domain = get_current_site(request).domain
-            mail_subject = 'Activate your account'
-            mail_body = 'Please click on the link below to activate your account.\n{}://{}/accounts/useractivation/{}'.format(request.scheme, domain, token)
+            mail_subject = 'Email Confirmation'
+            mail_body = 'Please click on the link below to confirm your email address.\nIf it is a mistake then don\'t click on the link.\n{}://{}/accounts/emailconfirmation/{}'.format(request.scheme, domain, token)
             EmailMessage(mail_subject, mail_body, to=[request.POST['email']]).send()
-            return render(request, 'confirm_email.html')
+            return redirect('home')
 
 
-def user_activation(request, token):
+def email_confirmation(request, token):
     try:
         token = Token.objects.get(token=token)
-        if token.purpose == 'ua':
+        if token.purpose == 'ec':
             user = token.user
-            user.is_active = True
+            user.email = token.email
             user.save()
             token.delete()
             login(request, user)
