@@ -10,21 +10,8 @@ World Chat
 
 {% block body %}
 
-{% if not request.user.is_authenticated %}
 <div class="btn-list text-center">
     <a href="/worldchat/chat/" class="btn btn-success btn-lg mb-1">Join Chat</a>
 </div>
-{% elif not request.user.email %}
-<div class="btn-list text-center">
-    <a href="/worldchat/chat/" class="btn btn-success btn-lg mb-1 disabled">Join Chat</a>
-</div>
-<div class="col-12 text-center" style="margin-top: 10px;">
-    <p style="color: rgb(255, 52, 52);">Confirm your email to join chat</p>
-</div>
-{% else %}
-<div class="btn-list text-center">
-    <a href="/worldchat/chat/" class="btn btn-success btn-lg mb-1">Join Chat</a>
-</div>
-{% endif %}
 
 {% endblock %}

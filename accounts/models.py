@@ -4,10 +4,13 @@ from uuid import uuid4
 
 
 class Token(models.Model):
+    '''
+    ua - useractivation
+    rp - reset password
+    '''
     token = models.UUIDField(primary_key = True, default = uuid4, editable = False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, null=False)
     purpose = models.CharField(max_length=2, blank=False, null=False)
-    email = models.EmailField()
     timestamp = models.DateField(auto_now_add=True)
 
     class Meta:

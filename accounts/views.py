@@ -42,32 +42,31 @@ def user_signup(request):
                 'firstname': request.POST['firstname'], 'lastname': request.POST['lastname']})
         else:
             user = User.objects.create_user(
-                username=username, password=request.POST['password'],
-                first_name=request.POST['firstname'], last_name=request.POST['lastname']
+                username=username, password=request.POST['password'], is_active=False,
+                first_name=request.POST['firstname'], last_name=request.POST['lastname'], email=request.POST['email']
                 )
-            login(request, user)
-            token = Token.objects.create(user=user, purpose='ec', email=request.POST['email']).token
+            token = Token.objects.create(user=user, purpose='ua').token
             domain = get_current_site(request).domain
-            mail_subject = 'Email Confirmation'
-            mail_body = 'Please click on the link below to confirm your email address.\nIf it is a mistake then don\'t click on the link.\n{}://{}/accounts/emailconfirmation/{}'.format(request.scheme, domain, token)
+            mail_subject = 'Account Activation'
+            mail_body = 'Please click on the link below to activate your account.\nIf it is a mistake then don\'t click on the link.\n{}://{}/accounts/useractivation/{}'.format(request.scheme, domain, token)
             EmailMessage(mail_subject, mail_body, to=[request.POST['email']]).send()
-            return redirect('home')
+            return render(request, 'account_activation.html', {'email': request.POST['email']})
 
 
-def email_confirmation(request, token):
+def user_activation(request, token):
     try:
         token = Token.objects.get(token=token)
-        if token.purpose == 'ec':
+        if token.purpose == 'ua':
             user = token.user
-            user.email = token.email
+            user.is_active = True
             user.save()
             token.delete()
             login(request, user)
             return redirect('home')
         else:
-            return render('400.html')
+            return render(request, '400.html')
     except:
-        return render('400.html')
+        return render(request, '400.html')
 
 
 @login_required

@@ -45,11 +45,15 @@ World Chat
         var protocol = 'ws://'
     }
 
-    const chatSocket = new WebSocket(
+    var chatSocket = new WebSocket(
         protocol
         + window.location.host
         + '/ws/worldchat/'
     );
+
+    chatSocket.onopen = function (e) {
+        console.log('Chat cocket connected successfully');
+    }
 
     chatSocket.onmessage = function (e) {
         const data = JSON.parse(e.data);
@@ -83,6 +87,18 @@ World Chat
 
     chatSocket.onclose = function (e) {
         console.error('Chat socket closed unexpectedly');
+        var interval = setInterval(function () {
+            chatSocket = new WebSocket(
+                protocol
+                + window.location.host
+                + '/ws/worldchat/'
+            );
+            chatSocket.onopen = function (e) {
+                console.log('Chat cocket connected successfully');
+                clearInterval(interval);
+            }
+            console.error('Trying to reconnect');
+        }, 5000);
     };
 
     document.getElementById('chat-message-input').focus();
