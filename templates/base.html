@@ -221,20 +221,6 @@
                             {% endblock %}
                         </h1>
                     </div>
-                    {% if request.user.is_authenticated %}
-                    {% if not request.user.email %}
-                    <div>
-                        <div class="alert alert-warning">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                            <strong>Email Confirmation Pending</strong>
-                            <hr class="message-inner-separator">
-                            <p>Please confirm your email address or <a href="/accounts/registeremail/"
-                                class="btn btn-link box-shadow-0 px-0">register from here</a> to get full access to this site. Check your
-                                email for confirmation.</p>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% endif %}
                     {% block body %}
                     {% endblock %}
                 </div>
