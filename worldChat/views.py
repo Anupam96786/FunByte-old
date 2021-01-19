@@ -8,7 +8,4 @@ def index(request):
 
 @login_required
 def chat(request):
-    if request.user.email:
-        return render(request, 'wc_chat.html')
-    else:
-        return redirect('world_chat')
+    return render(request, 'wc_chat.html')

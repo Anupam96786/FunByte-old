@@ -12,10 +12,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         )
 
         if self.scope['user'].is_authenticated:
-            if self.scope['user'].email:
-                await self.accept()
-            else:
-                await self.close()
+            await self.accept()
         else:
             await self.close()
 
