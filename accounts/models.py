@@ -5,8 +5,9 @@ from uuid import uuid4
 
 class Token(models.Model):
     '''
-    ua - useractivation
-    rp - reset password
+    ua - user activation
+    fp - forgot password
+    cp - change password
     '''
     token = models.UUIDField(primary_key = True, default = uuid4, editable = False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, null=False)

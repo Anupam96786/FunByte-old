@@ -73,3 +73,15 @@ def user_activation(request, token):
 def user_logout(request):
     logout(request)
     return redirect('home')
+
+
+def change_password(request):
+    if request.method == 'GET':
+        return render(request, 'change_password.html')
+    if request.method == 'POST':
+        user = authenticate(request, username=request.user.username, password=requset.POST['old_password'])
+        if user is not None:
+            user.password = request.POST['new_password']
+            user.save()
+        else:
+            return render(request, 'change_password.html', {'message': 'Please enter correct password'})
