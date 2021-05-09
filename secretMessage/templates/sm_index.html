@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Secret Message
+{% endblock %}
+
+{% load static %}
+
+{% block page_header %}
+Secret Message
+{% endblock %}
+
+{% block body %}
+
+<div class="col-lg-9" style="margin-bottom: 20px;">
+    <div class="input-group">
+        <input type="text" class="form-control bg-white" value="{{ domain }}/secretmessage/send/{{ id }}" id="smurl"
+            readonly>
+        <div class="input-group-append ">
+            <button type="button" class="btn btn-primary" onclick="copy()">
+                <i class="fa fa-clone " aria-hidden="true"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    {%for message in messages %}
+    <div class="col-md-12 col-xl-4" id="{{ message.id }}">
+        <div class="card text-white bg-primary">
+            <div class="card-header ">
+                <h3 class="card-title"> - Anonymous</h3>
+                <div class="card-options">
+                    <a href="#" class="card-options-collapse" data-toggle="card-collapse" style="margin-right: 20px;"><i
+                            class="fe fe-chevron-up text-white"></i></a>
+                    <a href="#" class="card-options-remove" id="b{{ message.id }}" onclick="del(this.id.slice(1))"><i
+                            class="fa fa-trash text-white"></i></a>
+                </div>
+            </div>
+            <div class="card-body" style="padding: 15px; padding-top: 0px; padding-bottom: 5px;">
+                <i class="fa fa-quote-left"></i>
+                <p class="card-text">{{ message.message }}</p>
+                <i class="fa fa-quote-right" style="margin-left: 95%;"></i>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+    integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+    crossorigin="anonymous"></script>
+<script>
+    document.getElementById("smurl").value = location.protocol + "//" + document.getElementById("smurl").value;
+    function del(id) {
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this message!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    url: location.protocol + "//" + "{{ domain }}" + "/secretmessage/delmsg/",
+                    type: 'POST',
+                    data: { 'csrfmiddlewaretoken': '{{ csrf_token }}', "id": id },
+                    datatype: 'json',
+                    success: function (data) {
+                        document.getElementById(id).remove();
+                        swal({
+                            title: "Deleted!",
+                            text: "Message has been deleted!",
+                            icon: "success",
+                        });
+                    },
+                    error: function () {
+                        swal({
+                            text: "Something went wrong!",
+                            icon: "error",
+                        });
+                    }
+                });
+            }
+        });
+    }
+    function copy() {
+        var copyText = document.getElementById("smurl");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999);
+        document.execCommand("copy");
+        swal("URL copied!", {
+            icon: "success",
+        });
+    }
+</script>
+{% endblock %}

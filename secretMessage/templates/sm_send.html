@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Secret Message
+{% endblock %}
+
+{% load static %}
+
+{% block page_header %}
+Secret Message
+{% endblock %}
+
+{% block body %}
+
+<div class="card">
+    <div class="card-header">
+        <div>
+            <h3 class="card-title">Message</h3>
+        </div>
+    </div>
+    <div class="card-body" style="padding-bottom: 0px;">
+        <form method="POST" id="message_form">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-12 ">
+                    <div class="form-group mb-0">
+                        <textarea class="form-control" name="message" rows="4" placeholder="message here..."></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 ">
+                    <div class="form-group mb-0">
+                        <div class="btn" style="float: right; padding-right: 0px;" id="send">
+                            <a href="#" class="btn btn-pill btn-success">Send Message</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+    integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+    crossorigin="anonymous"></script>
+<script>
+    document.getElementById("send").onclick = function () {
+        swal({
+            title: "Are you sure?",
+            text: "Once sent, you will not be able to delete this message!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }).then((send) => {
+            if (send) {
+                swal({
+                    title: "Sent!",
+                    text: "Message has been sent!",
+                    icon: "success",
+                    buttons: false,
+                });
+                setInterval(function () { document.getElementById("message_form").submit(); }, 1000);
+            }
+        });
+    }
+</script>
+{% endblock %}
