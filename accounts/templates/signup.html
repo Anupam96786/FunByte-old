@@ -146,6 +146,9 @@ Sign Up
 {% block js %}
 <!--Accordion-Wizard-Form js-->
 <script src="{% static 'plugins/accordion-Wizard-Form/jquery.accordion-wizard.min.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+    integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+    crossorigin="anonymous"></script>
 
 <!--Advanced Froms js-->
 <script>
@@ -161,19 +164,28 @@ Sign Up
                 if ($("#checkbox2").prop('checked') == true) {
                     if ($('#password').val() == $('#cpassword').val()) {
                         if ($('#password').val() == "") {
-                            alert("please enter a password");
+                            swal({
+                                text: "Please enter a password",
+                                icon: "warning",
+                            });
                             return false;
                         }
                         else {
                             return true;
                         }
                     } else {
-                        alert("password mismatched");
+                        swal({
+                            text: "Password mismatched",
+                            icon: "warning",
+                        });
                         return false;
                     };
                 }
                 else {
-                    alert("please accept T&C to proceed");
+                    swal({
+                        text: "Please accept T&C to proceed!",
+                        icon: "warning",
+                    });
                     return false;
                 }
             }
