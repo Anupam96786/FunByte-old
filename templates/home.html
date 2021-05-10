@@ -14,6 +14,7 @@ Home
 {% block body %}
 <!-- Row -->
 <div class="row">
+
     <!-- World Chat Card -->
     <div class="col-md-12 col-lg-4 col-md-4 col-xl-4">
         <div class="card overflow-hidden">
@@ -27,17 +28,21 @@ Home
         </div>
     </div>
     <!-- World Chat Card end -->
+
+    <!-- Secret Message Card -->
     <div class="col-md-12 col-lg-4 col-md-4 col-xl-4">
         <div class="card overflow-hidden">
             <img src="{% static 'images/photos/secretMessage/secret-message-logo.jpg' %}" alt="image">
             <div class="card-body">
-                <h5 class="card-title mb-2">Card title</h5>
-                <p class="card-text text-muted">One disadvantage of Lorum Ipsum is that in Latin certain letters appear
-                    more frequently than others.</p>
+                <h5 class="card-title mb-2">Secret Message</h5>
+                <p class="card-text text-muted">Get messages from your friends, coworkers and Fans.
+                    But you can never know who messaged you!</p>
                 <a href="/secretmessage/" class="btn btn-primary btn-lg mb-1" style="float: right;">Go</a>
             </div>
         </div>
     </div>
+    <!-- Secret Message Card end -->
+
 </div>
 <!-- End Row -->
 {% endblock %}
