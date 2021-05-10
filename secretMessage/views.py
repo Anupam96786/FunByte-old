@@ -27,7 +27,7 @@ def send_msg(request, user_id):
             user = SMID.objects.get(id=user_id).user
             if request.user.is_authenticated and request.user == user:
                 return redirect('secret_message')
-            return render(request, 'sm_send.html')
+            return render(request, 'sm_send.html', {'user': user.first_name})
         except:
             return render(request, '400.html')
     if request.method == 'POST':

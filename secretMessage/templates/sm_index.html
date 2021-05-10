@@ -51,20 +51,18 @@ Secret Message
 {% endblock %}
 
 {% block js %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
-    integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
-    crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@3/dark.css">
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
     document.getElementById("smurl").value = location.protocol + "//" + document.getElementById("smurl").value;
     function del(id) {
-        swal({
+        Swal.fire({
             title: "Are you sure?",
             text: "Once deleted, you will not be able to recover this message!",
             icon: "warning",
-            buttons: true,
-            dangerMode: true,
+            showCancelButton: true,
         }).then((willDelete) => {
-            if (willDelete) {
+            if (willDelete.isConfirmed) {
                 $.ajax({
                     url: location.protocol + "//" + "{{ domain }}" + "/secretmessage/delmsg/",
                     type: 'POST',
@@ -72,14 +70,14 @@ Secret Message
                     datatype: 'json',
                     success: function (data) {
                         document.getElementById(id).remove();
-                        swal({
+                        Swal.fire({
                             title: "Deleted!",
                             text: "Message has been deleted!",
                             icon: "success",
                         });
                     },
                     error: function () {
-                        swal({
+                        Swal.fire({
                             text: "Something went wrong!",
                             icon: "error",
                         });
@@ -93,7 +91,8 @@ Secret Message
         copyText.select();
         copyText.setSelectionRange(0, 99999);
         document.execCommand("copy");
-        swal("URL copied!", {
+        Swal.fire({
+            title: "URL copied!",
             icon: "success",
         });
     }

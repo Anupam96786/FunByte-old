@@ -15,7 +15,7 @@ Secret Message
 <div class="card">
     <div class="card-header">
         <div>
-            <h3 class="card-title">Message</h3>
+            <h3 class="card-title" style="text-transform: none;">Message {{ user }} Secretly 😉, he will never know who messaged him.😅</h3>
         </div>
     </div>
     <div class="card-body" style="padding-bottom: 0px;">
@@ -44,24 +44,23 @@ Secret Message
 {% endblock %}
 
 {% block js %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
-    integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
-    crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@3/dark.css">
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
     document.getElementById("send").onclick = function () {
-        swal({
+        Swal.fire({
             title: "Are you sure?",
             text: "Once sent, you will not be able to delete this message!",
             icon: "warning",
-            buttons: true,
+            showCancelButton: true,
             dangerMode: true,
         }).then((send) => {
-            if (send) {
-                swal({
+            if (send.isConfirmed) {
+                Swal.fire({
                     title: "Sent!",
                     text: "Message has been sent!",
                     icon: "success",
-                    buttons: false,
+                    showConfirmButton: false,
                 });
                 setInterval(function () { document.getElementById("message_form").submit(); }, 1000);
             }
