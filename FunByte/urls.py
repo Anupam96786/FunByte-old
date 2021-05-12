@@ -9,6 +9,7 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('worldchat/', include('worldChat.urls')),
     path('secretmessage/', include('secretMessage.urls')),
+    path('tictactoe/', include('ticTacToe.urls')),
 ]
 
 handler400 = views.error_400

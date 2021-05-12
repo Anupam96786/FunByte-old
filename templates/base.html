@@ -75,6 +75,8 @@
                             <a class="close-toggle" href="#"><i class="fe fe-x"></i></a>
                         </div>
                         <div class="d-flex order-lg-2 ml-auto header-right">
+
+                            <!-- Search -->
                             <div class="d-md-flex header-search" id="bs-example-navbar-collapse-1">
                                 <form class="navbar-form" role="search">
                                     <div class="input-group ">
@@ -90,13 +92,16 @@
                                     </div>
                                 </form>
                             </div>
-                            <!-- Search -->
+                            <!-- Search end -->
+
+                            <!--Full Screen Button -->
                             <div class="d-md-flex">
                                 <a href="#" class="nav-link icon full-screen-link">
                                     <i class="fe fe-minimize fullscreen-button"></i>
                                 </a>
                             </div>
-                            <!--Navbar -->
+                            <!--Full Screen Button end -->
+
                             {% if request.user.is_authenticated %}
                             <div class="dropdown header-profile">
                                 <a class="nav-link pr-0 leading-none d-flex pt-1" data-toggle="dropdown" href="#">

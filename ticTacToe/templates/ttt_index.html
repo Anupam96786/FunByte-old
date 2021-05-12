@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Tic-Tac-Toe
+{% endblock %}
+
+{% load static %}
+
+{% block css %}
+<style>
+    #board {
+        width: 100%;
+        max-width: 60vh;
+        display: flex;
+        flex-wrap: wrap;
+        font-size: 100px;
+        margin-top: 40px;
+        font-family: 'Nerko One', cursive;
+        padding-top: 0px;
+    }
+
+    .field {
+        height: 20vh;
+        width: 33.33333%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #2a1e5c;
+        border: none;
+        border-radius: 0px;
+        border-bottom: 3px solid #ffffff;
+        border-right: 3px solid #ffffff;
+        outline: none;
+    }
+
+    .field.no-r {
+        border-right: none;
+    }
+
+    .field.no-b {
+        border-bottom: none;
+    }
+
+    .field p {
+        margin: 0px;
+    }
+
+    p {
+        opacity: 1;
+        transition: opacity 3s;
+    }
+
+    p.hide {
+        opacity: 0;
+    }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Nerko+One&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block page_header %}
+Tic Tac Toe
+{% endblock %}
+
+{% block body %}
+
+<!-- Row -->
+<div class="row">
+    <div class="card">
+        <div class="card-body" style="padding-left: 0px; padding-right: 0px;">
+            <div class="col-md-12 col-lg-4 mx-auto" style="min-width: fit-content; max-width: 60vh;">
+                <div class="card" style="background-color: #2a1e5c;">
+                    <div class="card-header">
+                        <h3 class="card-title mx-auto"
+                            style="font-size: 60px; font-family: 'Nerko One', cursive; color: #dbdfac;">Play</h3>
+                    </div>
+                    <div class="card-body"
+                        style="padding-top: 0px; padding-left: 0px; padding-right: 0px; padding-bottom: 24px;">
+                        <div class="board" id="board">
+                            <div class="field" id="0">
+                                <p class="hide" style="color: #dbdfac;">T</p>
+                            </div>
+                            <div class="field" id="1">
+                                <p class="hide" style="color: #dbdfac;">I</p>
+                            </div>
+                            <div class="field no-r" id="2">
+                                <p class="hide" style="color: #dbdfac;">C</p>
+                            </div>
+                            <div class="field" id="3">
+                                <p class="hide" style="color: #dbdfac;">T</p>
+                            </div>
+                            <div class="field" id="4">
+                                <p class="hide" style="color: #dbdfac;">A</p>
+                            </div>
+                            <div class="field no-r" id="5">
+                                <p class="hide" style="color: #dbdfac;">C</p>
+                            </div>
+                            <div class="field no-b" id="6">
+                                <p class="hide" style="color: #dbdfac;">T</p>
+                            </div>
+                            <div class="field no-b" id="7">
+                                <p class="hide" style="color: #dbdfac;">O</p>
+                            </div>
+                            <div class="field no-b no-r" id="8">
+                                <p class="hide" style="color: #dbdfac;">E</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer mx-auto" id="footer-buttons">
+                        <button class="mx-auto btn-block" style="padding: 10px 20px; background-color: #d7f171; border: none;
+                        border-radius: 20px; color: #2a1e5c; font-size: 20px;
+                        font-weight: bold; cursor: pointer; text-transform: uppercase;" onclick="single()">Single
+                            Player</button>
+                        <button class="mx-auto btn-block" style="padding: 10px 20px; background-color: #d7f171; border: none;
+                        border-radius: 20px; color: #2a1e5c; font-size: 20px;
+                        font-weight: bold; cursor: pointer; text-transform: uppercase;"
+                            onclick="multi()">Multiplayer</button>
+                        <button class="mx-auto btn-block" style="padding: 10px 20px; background-color: #d7f171; border: none;
+                        border-radius: 20px; color: #2a1e5c; font-size: 20px;
+                        font-weight: bold; cursor: pointer; text-transform: uppercase;" onclick="leader()"><i
+                                class="fe fe-award" style="padding-right: 5px;"></i>Leaderboard</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Row-->
+
+{% endblock %}
+
+{% block js %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@3/dark.css">
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+    var board = document.querySelectorAll('#board')[0].children;
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function tableAnimation() {
+        for (let index = 0; index < board.length; index++) {
+            await sleep(250);
+            board[index].children[0].classList.remove('hide');
+        }
+    }
+    tableAnimation();
+
+    function single() {
+        window.location = "/tictactoe/single/";
+    }
+
+    function multi() {
+        document.getElementById("footer-buttons").innerHTML = `
+                        <button class="mx-auto btn-block" style="padding: 10px 20px; background-color: #d7f171; border: none;
+                        border-radius: 20px; color: #2a1e5c; font-size: 20px;
+                            font-weight: bold; cursor: pointer; text-transform: uppercase;" onclick="multiOnline()">Online</button>
+                        <button class="mx-auto btn-block" style="padding: 10px 20px; background-color: #d7f171; border: none;
+                        border-radius: 20px; color: #2a1e5c; font-size: 20px;
+                        font-weight: bold; cursor: pointer; text-transform: uppercase;"
+                            onclick="multiOffline()">Offline</button>
+                        <button class="mx-auto btn-block" style="padding: 10px 20px; background-color: #d7f171; border: none;
+                        border-radius: 20px; color: #2a1e5c; font-size: 20px;
+                        font-weight: bold; cursor: pointer; text-transform: uppercase;"
+                            onclick="back()">Back</button>`
+    }
+
+    function multiOnline() {
+        Swal.fire({
+            text: "Will be available soon!",
+            icon: "error",
+        });
+    }
+
+    function multiOffline() {
+        window.location = '/tictactoe/multi/offline/'
+    }
+
+    function back() {
+        document.getElementById("footer-buttons").innerHTML = `<button class="mx-auto btn-block" style="padding: 10px 20px; background-color: #d7f171; border: none;
+                        border-radius: 20px; color: #2a1e5c; font-size: 20px;
+                        font-weight: bold; cursor: pointer; text-transform: uppercase;" onclick="single()">Single
+                            Player</button>
+                        <button class="mx-auto btn-block" style="padding: 10px 20px; background-color: #d7f171; border: none;
+                        border-radius: 20px; color: #2a1e5c; font-size: 20px;
+                        font-weight: bold; cursor: pointer; text-transform: uppercase;"
+                            onclick="multi()">Multiplayer</button>
+                        <button class="mx-auto btn-block" style="padding: 10px 20px; background-color: #d7f171; border: none;
+                        border-radius: 20px; color: #2a1e5c; font-size: 20px;
+                        font-weight: bold; cursor: pointer; text-transform: uppercase;" onclick="leader()"><i
+                                class="fe fe-award" style="padding-right: 5px;"></i>Leaderboard</button>`
+    }
+
+    function leader() {
+        Swal.fire({
+            text: "Will be available soon!",
+            icon: "error",
+        });
+    }
+</script>
+{% endblock %}

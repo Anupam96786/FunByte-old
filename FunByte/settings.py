@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'channels',
     'secretMessage',
     'rest_framework',
+    'ticTacToe',
 ]
 
 MIDDLEWARE = [
