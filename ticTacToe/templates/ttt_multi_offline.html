@@ -438,6 +438,7 @@ Tic Tac Toe
 
     function restart() {
         mainBoard = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+        currentPlayer = tick_circle;
         const fields = document.getElementsByClassName('field');
         for (let i = 0; i < fields.length; i++) {
             fields[i].classList.remove('win');
