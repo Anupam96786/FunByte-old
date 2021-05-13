@@ -40,6 +40,11 @@ Tic-Tac-Toe
         transition: background-color 2s;
     }
 
+    .field.lost {
+        background-color: #ff5964;
+        transition: background-color 2s;
+    }
+
     .field.no-r {
         border-right: none;
     }
@@ -180,6 +185,7 @@ Tic Tac Toe
 
     var score = 0;
     var maxScore = 0;
+    var gamePlayed = 0;
 
     $.ajax({
         url: "/tictactoe/maxscore/",
@@ -267,7 +273,7 @@ Tic Tac Toe
     const Player = (sign) => {
         let _sign = sign;
         const getSign = () => _sign;
-        const setSign = (sign, active) => {
+        const setSign = (sign) => {
             _sign = sign;
         }
         return {
@@ -507,11 +513,11 @@ Tic Tac Toe
          */
         const changeSign = (sign) => {
             if (sign == 'X') {
-                _humanPlayer.setSign('X', true);
+                _humanPlayer.setSign('X');
                 _aiPlayer.setSign('O');
             }
             else if (sign == 'O') {
-                _humanPlayer.setSign('O', true);
+                _humanPlayer.setSign('O');
                 _aiPlayer.setSign('X');
             }
             else throw 'Incorrect sign';
@@ -584,6 +590,7 @@ Tic Tac Toe
                         document.msExitFullscreen();
                     }
                 }
+                gamePlayed += 1;
                 Swal.fire({
                     title: "Its a draw!",
                     text: "Want to play again?",
@@ -600,8 +607,12 @@ Tic Tac Toe
             else {
                 console.log(`The winner is player ${sign}`);
                 var boxes = playerWon();
-                await sleep(2000);
                 if (gameController.getHumanPlayer().getSign() == sign) {
+                    // when human player wins and AI loses.
+                    document.getElementsByClassName('field')[boxes[0]].classList.add('win');
+                    document.getElementsByClassName('field')[boxes[1]].classList.add('win');
+                    document.getElementsByClassName('field')[boxes[2]].classList.add('win');
+                    await sleep(2000);
                     console.log("user won");
                     if (
                         document.fullscreenElement ||
@@ -621,6 +632,7 @@ Tic Tac Toe
                     }
                     score += 1;
                     updateScore();
+                    gamePlayed += 1;
                     Swal.fire({
                         title: "Congratulation! You Won!",
                         text: "Want to play again?",
@@ -640,6 +652,11 @@ Tic Tac Toe
                         }
                     });
                 } else {
+                    // when AI wins and human player loses
+                    document.getElementsByClassName('field')[boxes[0]].classList.add('lost');
+                    document.getElementsByClassName('field')[boxes[1]].classList.add('lost');
+                    document.getElementsByClassName('field')[boxes[2]].classList.add('lost');
+                    await sleep(2000);
                     console.log("user lost");
                     if (
                         document.fullscreenElement ||
@@ -660,6 +677,7 @@ Tic Tac Toe
                     // post data as lost
                     score = 0;
                     updateScore();
+                    gamePlayed += 1;
                     Swal.fire({
                         title: "You Lost!",
                         text: "Want to play again?",
@@ -669,6 +687,9 @@ Tic Tac Toe
                         cancelButtonText: "No",
                     }).then((play) => {
                         if (play.isConfirmed) {
+                            document.getElementsByClassName('field')[boxes[0]].classList.remove('lost');
+                            document.getElementsByClassName('field')[boxes[1]].classList.remove('lost');
+                            document.getElementsByClassName('field')[boxes[2]].classList.remove('lost');
                             gameController.restart();
                         } else {
                             window.location = '/tictactoe/'
@@ -703,12 +724,13 @@ Tic Tac Toe
          * Restarts the game.
          */
         const restart = async function () {
-
-            const card = document.querySelector('.card');
-
             gameBoard.clear();
             displayController.clear();
-            if (_humanPlayer.getSign() == 'O') {
+            console.log(gamePlayed);
+            if ((_humanPlayer.getSign() == 'O') && !(gamePlayed % 2)) {
+                aiStep();
+            }
+            else if ((_humanPlayer.getSign() == 'X') && (gamePlayed % 2)) {
                 aiStep();
             }
             console.log('restart');
@@ -815,6 +837,7 @@ Tic Tac Toe
                         if (restart.isConfirmed) {
                             score = 0;
                             updateScore();
+                            gamePlayed = 0;
                             gameController.restart();
                         }
                     });
@@ -854,10 +877,7 @@ Tic Tac Toe
             var b = mainBoard[winningConditions[i][1]];
             var c = mainBoard[winningConditions[i][2]];
             if (a != 0 && a == b && b == c) {
-                const fields = document.getElementsByClassName('field');
-                fields[winningConditions[i][0]].classList.add('win');
-                fields[winningConditions[i][1]].classList.add('win');
-                fields[winningConditions[i][2]].classList.add('win');
+                // returns those boxes for which a player wins
                 return winningConditions[i];
             }
         }
