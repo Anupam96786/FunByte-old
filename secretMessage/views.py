@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-from django.contrib.sites.shortcuts import get_current_site
 from .models import Message, SMID
 from django.contrib.auth.decorators import login_required
 from rest_framework.decorators import api_view
@@ -15,7 +14,6 @@ def index(request):
     else:
         user_id = SMID.objects.create(user=request.user)
     return render(request, 'sm_index.html', {
-        'domain': get_current_site(request).domain,
         'id': user_id.id,
         'messages': reversed(Message.objects.filter(receiver=user_id.user))
         })

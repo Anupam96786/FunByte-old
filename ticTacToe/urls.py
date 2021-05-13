@@ -5,5 +5,6 @@ urlpatterns = [
     path('', views.index, name='ttt'),
     path('single/', views.single_options, name='ttt_single_play'),
     path('single/<str:player_sign>/<str:level>', views.single_play, name='ttt_single_play'),
-    path('multi/offline/', views.multi_offline, name='ttt_multi_offline')
+    path('maxscore/', views.max_score, name='ttt_max_score'),
+    path('multi/offline/', views.multi_offline, name='ttt_multi_offline'),
 ]

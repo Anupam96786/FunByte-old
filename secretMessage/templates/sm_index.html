@@ -64,7 +64,7 @@ Secret Message
         }).then((willDelete) => {
             if (willDelete.isConfirmed) {
                 $.ajax({
-                    url: location.protocol + "//" + "{{ domain }}" + "/secretmessage/delmsg/",
+                    url: "/secretmessage/delmsg/",
                     type: 'POST',
                     data: { 'csrfmiddlewaretoken': '{{ csrf_token }}', "id": id },
                     datatype: 'json',
