@@ -727,7 +727,6 @@ Tic Tac Toe
             const restart = async function () {
                 gameBoard.clear();
                 displayController.clear();
-                console.log(gamePlayed);
                 if ((_humanPlayer.getSign() == 'O') && !(gamePlayed % 2)) {
                     aiStep();
                 }
