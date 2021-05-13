@@ -74,12 +74,14 @@ Tic Tac Toe
 
 {% block js %}
 <script>
-    function submit() {
-        if (document.querySelectorAll("input.custom-control-input[value='X']")[0].checked) {
-            window.location = '/tictactoe/single/X/' + document.getElementById('level').value;
-        } else {
-            window.location = '/tictactoe/single/O/' + document.getElementById('level').value;
+    (() => {
+        function submit() {
+            if (document.querySelectorAll("input.custom-control-input[value='X']")[0].checked) {
+                window.location = '/tictactoe/single/X/' + document.getElementById('level').value;
+            } else {
+                window.location = '/tictactoe/single/O/' + document.getElementById('level').value;
+            }
         }
-    }
+    })();
 </script>
 {% endblock %}

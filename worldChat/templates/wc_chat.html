@@ -37,28 +37,28 @@ World Chat
 
 {% block js %}
 <script>
+    (() => {
+        if (location.protocol === 'https:') {
+            var protocol = 'wss://'
+        }
+        else {
+            var protocol = 'ws://'
+        }
 
-    if (location.protocol === 'https:') {
-        var protocol = 'wss://'
-    }
-    else {
-        var protocol = 'ws://'
-    }
+        var chatSocket = new WebSocket(
+            protocol
+            + window.location.host
+            + '/ws/worldchat/'
+        );
 
-    var chatSocket = new WebSocket(
-        protocol
-        + window.location.host
-        + '/ws/worldchat/'
-    );
+        chatSocket.onopen = function (e) {
+            console.log('Chat cocket connected successfully');
+        }
 
-    chatSocket.onopen = function (e) {
-        console.log('Chat cocket connected successfully');
-    }
-
-    chatSocket.onmessage = function (e) {
-        const data = JSON.parse(e.data);
-        if (data.username == '{{ request.user.username }}') {
-            document.getElementById('chat-log').innerHTML += `
+        chatSocket.onmessage = function (e) {
+            const data = JSON.parse(e.data);
+            if (data.username == '{{ request.user.username }}') {
+                document.getElementById('chat-log').innerHTML += `
             <div class="d-flex justify-content-end ">
                 <div class="msg_cotainer_send">
                     ${data.message}
@@ -68,9 +68,9 @@ World Chat
                 </div>
             </div>
             `
-        }
-        else {
-            document.getElementById('chat-log').innerHTML += `
+            }
+            else {
+                document.getElementById('chat-log').innerHTML += `
             <div class="d-flex justify-content-start">
                 <div class="img_cont_msg">
                     <i class="fe fe-arrow-left"></i>
@@ -82,39 +82,40 @@ World Chat
                 </div>
             </div>
             `
-        }
-    };
-
-    chatSocket.onclose = function (e) {
-        console.error('Chat socket closed unexpectedly');
-        var interval = setInterval(function () {
-            chatSocket = new WebSocket(
-                protocol
-                + window.location.host
-                + '/ws/worldchat/'
-            );
-            chatSocket.onopen = function (e) {
-                console.log('Chat cocket connected successfully');
-                clearInterval(interval);
             }
-            console.error('Trying to reconnect');
-        }, 5000);
-    };
+        };
 
-    document.getElementById('chat-message-input').focus();
-    document.getElementById('chat-message-input').onkeyup = function (e) {
-        if (e.keyCode === 13) {  // enter, return
-            document.getElementById('chat-message-submit').click();
-        }
-    };
+        chatSocket.onclose = function (e) {
+            console.error('Chat socket closed unexpectedly');
+            var interval = setInterval(function () {
+                chatSocket = new WebSocket(
+                    protocol
+                    + window.location.host
+                    + '/ws/worldchat/'
+                );
+                chatSocket.onopen = function (e) {
+                    console.log('Chat cocket connected successfully');
+                    clearInterval(interval);
+                }
+                console.error('Trying to reconnect');
+            }, 5000);
+        };
 
-    document.getElementById('chat-message-submit').onclick = function (e) {
-        const messageInputDom = document.getElementById('chat-message-input');
-        const message = messageInputDom.value;
-        chatSocket.send(JSON.stringify({
-            'message': message
-        }));
-        messageInputDom.value = '';
-    };
+        document.getElementById('chat-message-input').focus();
+        document.getElementById('chat-message-input').onkeyup = function (e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.getElementById('chat-message-submit').click();
+            }
+        };
+
+        document.getElementById('chat-message-submit').onclick = function (e) {
+            const messageInputDom = document.getElementById('chat-message-input');
+            const message = messageInputDom.value;
+            chatSocket.send(JSON.stringify({
+                'message': message
+            }));
+            messageInputDom.value = '';
+        };
+    })();
 </script>
 {% endblock %}

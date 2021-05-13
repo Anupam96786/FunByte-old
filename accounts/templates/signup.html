@@ -152,45 +152,47 @@ Sign Up
 
 <!--Advanced Froms js-->
 <script>
-    (function ($) {
-        "use strict";
-        //accordion-wizard
-        var options = {
-            mode: 'wizard',
-            autoButtonsNextClass: 'btn btn-primary float-right',
-            autoButtonsPrevClass: 'btn btn-info',
-            stepNumberClass: 'badge badge-pill badge-primary mr-1',
-            onSubmit: function () {
-                if ($("#checkbox2").prop('checked') == true) {
-                    if ($('#password').val() == $('#cpassword').val()) {
-                        if ($('#password').val() == "") {
+    (() => {
+        (function ($) {
+            "use strict";
+            //accordion-wizard
+            var options = {
+                mode: 'wizard',
+                autoButtonsNextClass: 'btn btn-primary float-right',
+                autoButtonsPrevClass: 'btn btn-info',
+                stepNumberClass: 'badge badge-pill badge-primary mr-1',
+                onSubmit: function () {
+                    if ($("#checkbox2").prop('checked') == true) {
+                        if ($('#password').val() == $('#cpassword').val()) {
+                            if ($('#password').val() == "") {
+                                swal({
+                                    text: "Please enter a password",
+                                    icon: "warning",
+                                });
+                                return false;
+                            }
+                            else {
+                                return true;
+                            }
+                        } else {
                             swal({
-                                text: "Please enter a password",
+                                text: "Password mismatched",
                                 icon: "warning",
                             });
                             return false;
-                        }
-                        else {
-                            return true;
-                        }
-                    } else {
+                        };
+                    }
+                    else {
                         swal({
-                            text: "Password mismatched",
+                            text: "Please accept T&C to proceed!",
                             icon: "warning",
                         });
                         return false;
-                    };
-                }
-                else {
-                    swal({
-                        text: "Please accept T&C to proceed!",
-                        icon: "warning",
-                    });
-                    return false;
+                    }
                 }
             }
-        }
-        $("#form").accWizard(options);
-    })(jQuery);
+            $("#form").accWizard(options);
+        })(jQuery);
+    })();
 </script>
 {% endblock %}

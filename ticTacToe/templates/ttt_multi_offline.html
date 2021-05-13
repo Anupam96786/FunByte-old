@@ -157,213 +157,10 @@ Tic Tac Toe
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
 <script>
-    $('#fulltable').on('click', function () {
-        // if already full screen; exit
-        // else go fullscreen
-        if (
-            document.fullscreenElement ||
-            document.webkitFullscreenElement ||
-            document.mozFullScreenElement ||
-            document.msFullscreenElement
-        ) {
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
-            } else if (document.mozCancelFullScreen) {
-                document.mozCancelFullScreen();
-            } else if (document.webkitExitFullscreen) {
-                document.webkitExitFullscreen();
-            } else if (document.msExitFullscreen) {
-                document.msExitFullscreen();
-            }
-        } else {
-            element = $('#gamecard').get(0);
-            if (element.requestFullscreen) {
-                element.requestFullscreen();
-            } else if (element.mozRequestFullScreen) {
-                element.mozRequestFullScreen();
-            } else if (element.webkitRequestFullscreen) {
-                element.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-            } else if (element.msRequestFullscreen) {
-                element.msRequestFullscreen();
-            }
-        }
-    });
-
-</script>
-
-<script>
-    const tick_circle = "O";
-    const tick_x = "X";
-    var scoreO = 0;
-    var scoreX = 0;
-    var mainBoard = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-    const htmlBoard = Array.from(document.querySelectorAll('button.field'));
-    let currentPlayer = tick_circle;
-    const winningConditions = [
-        [0, 1, 2],
-        [3, 4, 5],
-        [6, 7, 8],
-        [0, 3, 6],
-        [1, 4, 7],
-        [2, 5, 8],
-        [0, 4, 8],
-        [2, 4, 6]
-    ];
-
-    function sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
-    async function boxClicked(id) {
-        if (!mainBoard[id]) {
-            mainBoard[id] = currentPlayer;
-            document.getElementById(id).children[0].textContent = currentPlayer;
-            deactivate();
-            if (matchDraw()) {
-                if (
-                    document.fullscreenElement ||
-                    document.webkitFullscreenElement ||
-                    document.mozFullScreenElement ||
-                    document.msFullscreenElement
-                ) {
-                    if (document.exitFullscreen) {
-                        document.exitFullscreen();
-                    } else if (document.mozCancelFullScreen) {
-                        document.mozCancelFullScreen();
-                    } else if (document.webkitExitFullscreen) {
-                        document.webkitExitFullscreen();
-                    } else if (document.msExitFullscreen) {
-                        document.msExitFullscreen();
-                    }
-                }
-                Swal.fire({
-                    title: "Its a draw!",
-                    text: "Want to play again?",
-                    icon: "warning",
-                    showCancelButton: true,
-                }).then((play) => {
-                    if (play.isConfirmed) {
-                        restart();
-                    }
-                });
-            }
-            if (playerWon()) {
-                await sleep(2000);
-                if (
-                    document.fullscreenElement ||
-                    document.webkitFullscreenElement ||
-                    document.mozFullScreenElement ||
-                    document.msFullscreenElement
-                ) {
-                    if (document.exitFullscreen) {
-                        document.exitFullscreen();
-                    } else if (document.mozCancelFullScreen) {
-                        document.mozCancelFullScreen();
-                    } else if (document.webkitExitFullscreen) {
-                        document.webkitExitFullscreen();
-                    } else if (document.msExitFullscreen) {
-                        document.msExitFullscreen();
-                    }
-                }
-                if (currentPlayer == "X") {
-                    scoreX += 1;
-                    document.getElementById("scoreX").innerText = scoreX;
-                } else {
-                    scoreO += 1;
-                    document.getElementById("scoreO").innerText = scoreO;
-                }
-                Swal.fire({
-                    title: "Congratulation! Player " + currentPlayer + " Won!",
-                    text: "Want to play again?",
-                    icon: "success",
-                    confirmButtonText: "Yes, Play",
-                    showCancelButton: true,
-                    cancelButtonText: "No",
-                }).then((play) => {
-                    if (play.isConfirmed) {
-                        restart();
-                    } else {
-                        window.location = '/tictactoe/'
-                    }
-                });
-            }
-            currentPlayer == "X" ? currentPlayer = "O" : currentPlayer = "X";
-            document.getElementById('turn').innerText = currentPlayer;
-            activate();
-        }
-    }
-
-    const deactivate = () => {
-        htmlBoard.forEach(field => {
-            field.setAttribute('disabled', '');
-        });
-    }
-
-    const activate = () => {
-        htmlBoard.forEach(field => {
-            field.removeAttribute('disabled');
-        });
-    }
-
-    function playerWon() {
-        for (let i = 0; i < winningConditions.length; i++) {
-            var a = mainBoard[winningConditions[i][0]];
-            var b = mainBoard[winningConditions[i][1]];
-            var c = mainBoard[winningConditions[i][2]];
-            if (a != 0 && a == b && b == c) {
-                const fields = document.getElementsByClassName('field');
-                fields[winningConditions[i][0]].classList.add('win');
-                fields[winningConditions[i][1]].classList.add('win');
-                fields[winningConditions[i][2]].classList.add('win');
-                return true;
-            }
-        }
-        return false;
-    }
-
-    function matchDraw() {
-        if (mainBoard.includes(0)) {
-            return false;
-        } else {
-            if (playerWon()) {
-                return false;
-            } else {
-                return true;
-            }
-        }
-    }
-
-    function restart() {
-        mainBoard = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-        const fields = document.getElementsByClassName('field');
-        for (let i = 0; i < fields.length; i++) {
-            fields[i].classList.remove('win');
-            fields[i].children[0].textContent = "";
-        }
-    }
-
-    function rstGame() {
-        if (mainBoard.includes("X") || mainBoard.includes("O") || scoreO > 0 || scoreX > 0) {
-            Swal.fire({
-                title: "Are you sure?",
-                text: "Want to restart?",
-                icon: "warning",
-                confirmButtonText: "Restart",
-                showCancelButton: true,
-            }).then((rst) => {
-                if (rst.isConfirmed) {
-                    scoreO = 0;
-                    scoreX = 0;
-                    document.getElementById("scoreO").innerText = scoreO;
-                    document.getElementById("scoreX").innerText = scoreX;
-                    restart();
-                }
-            });
-        }
-    }
-
-    function quit() {
-        if (mainBoard.includes("X") || mainBoard.includes("O")) {
+    (() => {
+        $('#fulltable').on('click', function () {
+            // if already full screen; exit
+            // else go fullscreen
             if (
                 document.fullscreenElement ||
                 document.webkitFullscreenElement ||
@@ -379,23 +176,224 @@ Tic Tac Toe
                 } else if (document.msExitFullscreen) {
                     document.msExitFullscreen();
                 }
-            }
-            Swal.fire({
-                title: "Are you sure?",
-                text: "Want to quit?",
-                icon: "warning",
-                confirmButtonText: "OK, Quit",
-                showCancelButton: true,
-                cancelButtonText: "Don't Quit",
-            }).then((quit) => {
-                if (quit.isConfirmed) {
-                    window.location = '/tictactoe/';
+            } else {
+                element = $('#gamecard').get(0);
+                if (element.requestFullscreen) {
+                    element.requestFullscreen();
+                } else if (element.mozRequestFullScreen) {
+                    element.mozRequestFullScreen();
+                } else if (element.webkitRequestFullscreen) {
+                    element.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+                } else if (element.msRequestFullscreen) {
+                    element.msRequestFullscreen();
                 }
-            });
-        } else {
-            window.location = '/tictactoe/';
-        }
-    }
+            }
+        });
 
+        const tick_circle = "O";
+        const tick_x = "X";
+        var scoreO = 0;
+        var scoreX = 0;
+        var mainBoard = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+        const htmlBoard = Array.from(document.querySelectorAll('button.field'));
+        let currentPlayer = tick_circle;
+        const winningConditions = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+        ];
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        async function boxClicked(id) {
+            if (!mainBoard[id]) {
+                mainBoard[id] = currentPlayer;
+                document.getElementById(id).children[0].textContent = currentPlayer;
+                deactivate();
+                if (matchDraw()) {
+                    if (
+                        document.fullscreenElement ||
+                        document.webkitFullscreenElement ||
+                        document.mozFullScreenElement ||
+                        document.msFullscreenElement
+                    ) {
+                        if (document.exitFullscreen) {
+                            document.exitFullscreen();
+                        } else if (document.mozCancelFullScreen) {
+                            document.mozCancelFullScreen();
+                        } else if (document.webkitExitFullscreen) {
+                            document.webkitExitFullscreen();
+                        } else if (document.msExitFullscreen) {
+                            document.msExitFullscreen();
+                        }
+                    }
+                    Swal.fire({
+                        title: "Its a draw!",
+                        text: "Want to play again?",
+                        icon: "warning",
+                        showCancelButton: true,
+                    }).then((play) => {
+                        if (play.isConfirmed) {
+                            restart();
+                        }
+                    });
+                }
+                if (playerWon()) {
+                    await sleep(2000);
+                    if (
+                        document.fullscreenElement ||
+                        document.webkitFullscreenElement ||
+                        document.mozFullScreenElement ||
+                        document.msFullscreenElement
+                    ) {
+                        if (document.exitFullscreen) {
+                            document.exitFullscreen();
+                        } else if (document.mozCancelFullScreen) {
+                            document.mozCancelFullScreen();
+                        } else if (document.webkitExitFullscreen) {
+                            document.webkitExitFullscreen();
+                        } else if (document.msExitFullscreen) {
+                            document.msExitFullscreen();
+                        }
+                    }
+                    if (currentPlayer == "X") {
+                        scoreX += 1;
+                        document.getElementById("scoreX").innerText = scoreX;
+                    } else {
+                        scoreO += 1;
+                        document.getElementById("scoreO").innerText = scoreO;
+                    }
+                    Swal.fire({
+                        title: "Congratulation! Player " + currentPlayer + " Won!",
+                        text: "Want to play again?",
+                        icon: "success",
+                        confirmButtonText: "Yes, Play",
+                        showCancelButton: true,
+                        cancelButtonText: "No",
+                    }).then((play) => {
+                        if (play.isConfirmed) {
+                            restart();
+                        } else {
+                            window.location = '/tictactoe/'
+                        }
+                    });
+                }
+                currentPlayer == "X" ? currentPlayer = "O" : currentPlayer = "X";
+                document.getElementById('turn').innerText = currentPlayer;
+                activate();
+            }
+        }
+
+        const deactivate = () => {
+            htmlBoard.forEach(field => {
+                field.setAttribute('disabled', '');
+            });
+        }
+
+        const activate = () => {
+            htmlBoard.forEach(field => {
+                field.removeAttribute('disabled');
+            });
+        }
+
+        function playerWon() {
+            for (let i = 0; i < winningConditions.length; i++) {
+                var a = mainBoard[winningConditions[i][0]];
+                var b = mainBoard[winningConditions[i][1]];
+                var c = mainBoard[winningConditions[i][2]];
+                if (a != 0 && a == b && b == c) {
+                    const fields = document.getElementsByClassName('field');
+                    fields[winningConditions[i][0]].classList.add('win');
+                    fields[winningConditions[i][1]].classList.add('win');
+                    fields[winningConditions[i][2]].classList.add('win');
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function matchDraw() {
+            if (mainBoard.includes(0)) {
+                return false;
+            } else {
+                if (playerWon()) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        }
+
+        function restart() {
+            mainBoard = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+            const fields = document.getElementsByClassName('field');
+            for (let i = 0; i < fields.length; i++) {
+                fields[i].classList.remove('win');
+                fields[i].children[0].textContent = "";
+            }
+        }
+
+        function rstGame() {
+            if (mainBoard.includes("X") || mainBoard.includes("O") || scoreO > 0 || scoreX > 0) {
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "Want to restart?",
+                    icon: "warning",
+                    confirmButtonText: "Restart",
+                    showCancelButton: true,
+                }).then((rst) => {
+                    if (rst.isConfirmed) {
+                        scoreO = 0;
+                        scoreX = 0;
+                        document.getElementById("scoreO").innerText = scoreO;
+                        document.getElementById("scoreX").innerText = scoreX;
+                        restart();
+                    }
+                });
+            }
+        }
+
+        function quit() {
+            if (mainBoard.includes("X") || mainBoard.includes("O")) {
+                if (
+                    document.fullscreenElement ||
+                    document.webkitFullscreenElement ||
+                    document.mozFullScreenElement ||
+                    document.msFullscreenElement
+                ) {
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    } else if (document.mozCancelFullScreen) {
+                        document.mozCancelFullScreen();
+                    } else if (document.webkitExitFullscreen) {
+                        document.webkitExitFullscreen();
+                    } else if (document.msExitFullscreen) {
+                        document.msExitFullscreen();
+                    }
+                }
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "Want to quit?",
+                    icon: "warning",
+                    confirmButtonText: "OK, Quit",
+                    showCancelButton: true,
+                    cancelButtonText: "Don't Quit",
+                }).then((quit) => {
+                    if (quit.isConfirmed) {
+                        window.location = '/tictactoe/';
+                    }
+                });
+            } else {
+                window.location = '/tictactoe/';
+            }
+        }
+    })();
 </script>
 {% endblock %}

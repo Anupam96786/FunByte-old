@@ -132,25 +132,26 @@ Tic Tac Toe
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@3/dark.css">
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
-    var board = document.querySelectorAll('#board')[0].children;
-    function sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
-    async function tableAnimation() {
-        for (let index = 0; index < board.length; index++) {
-            await sleep(250);
-            board[index].children[0].classList.remove('hide');
+    (() => {
+        var board = document.querySelectorAll('#board')[0].children;
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
         }
-    }
-    tableAnimation();
 
-    function single() {
-        window.location = "/tictactoe/single/";
-    }
+        async function tableAnimation() {
+            for (let index = 0; index < board.length; index++) {
+                await sleep(250);
+                board[index].children[0].classList.remove('hide');
+            }
+        }
+        tableAnimation();
 
-    function multi() {
-        document.getElementById("footer-buttons").innerHTML = `
+        function single() {
+            window.location = "/tictactoe/single/";
+        }
+
+        function multi() {
+            document.getElementById("footer-buttons").innerHTML = `
                         <button class="mx-auto btn-block" style="padding: 10px 20px; background-color: #d7f171; border: none;
                         border-radius: 20px; color: #2a1e5c; font-size: 20px;
                             font-weight: bold; cursor: pointer; text-transform: uppercase;" onclick="multiOnline()">Online</button>
@@ -162,21 +163,21 @@ Tic Tac Toe
                         border-radius: 20px; color: #2a1e5c; font-size: 20px;
                         font-weight: bold; cursor: pointer; text-transform: uppercase;"
                             onclick="back()">Back</button>`
-    }
+        }
 
-    function multiOnline() {
-        Swal.fire({
-            text: "Will be available soon!",
-            icon: "error",
-        });
-    }
+        function multiOnline() {
+            Swal.fire({
+                text: "Will be available soon!",
+                icon: "error",
+            });
+        }
 
-    function multiOffline() {
-        window.location = '/tictactoe/multi/offline/'
-    }
+        function multiOffline() {
+            window.location = '/tictactoe/multi/offline/'
+        }
 
-    function back() {
-        document.getElementById("footer-buttons").innerHTML = `<button class="mx-auto btn-block" style="padding: 10px 20px; background-color: #d7f171; border: none;
+        function back() {
+            document.getElementById("footer-buttons").innerHTML = `<button class="mx-auto btn-block" style="padding: 10px 20px; background-color: #d7f171; border: none;
                         border-radius: 20px; color: #2a1e5c; font-size: 20px;
                         font-weight: bold; cursor: pointer; text-transform: uppercase;" onclick="single()">Single
                             Player</button>
@@ -188,13 +189,14 @@ Tic Tac Toe
                         border-radius: 20px; color: #2a1e5c; font-size: 20px;
                         font-weight: bold; cursor: pointer; text-transform: uppercase;" onclick="leader()"><i
                                 class="fe fe-award" style="padding-right: 5px;"></i>Leaderboard</button>`
-    }
+        }
 
-    function leader() {
-        Swal.fire({
-            text: "Will be available soon!",
-            icon: "error",
-        });
-    }
+        function leader() {
+            Swal.fire({
+                text: "Will be available soon!",
+                icon: "error",
+            });
+        }
+    })();
 </script>
 {% endblock %}
