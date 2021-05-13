@@ -146,11 +146,11 @@ Sign Up
 {% block js %}
 <!--Accordion-Wizard-Form js-->
 <script src="{% static 'plugins/accordion-Wizard-Form/jquery.accordion-wizard.min.js' %}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
-    integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
-    crossorigin="anonymous"></script>
-
 <!--Advanced Froms js-->
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@3/dark.css">
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
 <script>
     (() => {
         (function ($) {
@@ -165,7 +165,7 @@ Sign Up
                     if ($("#checkbox2").prop('checked') == true) {
                         if ($('#password').val() == $('#cpassword').val()) {
                             if ($('#password').val() == "") {
-                                swal({
+                                Swal.fire({
                                     text: "Please enter a password",
                                     icon: "warning",
                                 });
@@ -175,7 +175,7 @@ Sign Up
                                 return true;
                             }
                         } else {
-                            swal({
+                            Swal.fire({
                                 text: "Password mismatched",
                                 icon: "warning",
                             });
@@ -183,7 +183,7 @@ Sign Up
                         };
                     }
                     else {
-                        swal({
+                        Swal.fire({
                             text: "Please accept T&C to proceed!",
                             icon: "warning",
                         });

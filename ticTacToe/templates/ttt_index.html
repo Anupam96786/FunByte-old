@@ -133,6 +133,7 @@ Tic Tac Toe
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
     (() => {
+        var footerButtons;
         var board = document.querySelectorAll('#board')[0].children;
         function sleep(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
@@ -145,13 +146,14 @@ Tic Tac Toe
             }
         }
         tableAnimation();
+    })();
+    function single() {
+        window.location = "/tictactoe/single/";
+    }
 
-        function single() {
-            window.location = "/tictactoe/single/";
-        }
-
-        function multi() {
-            document.getElementById("footer-buttons").innerHTML = `
+    function multi() {
+        footerButtons = document.getElementById("footer-buttons").innerHTML;
+        document.getElementById("footer-buttons").innerHTML = `
                         <button class="mx-auto btn-block" style="padding: 10px 20px; background-color: #d7f171; border: none;
                         border-radius: 20px; color: #2a1e5c; font-size: 20px;
                             font-weight: bold; cursor: pointer; text-transform: uppercase;" onclick="multiOnline()">Online</button>
@@ -162,41 +164,26 @@ Tic Tac Toe
                         <button class="mx-auto btn-block" style="padding: 10px 20px; background-color: #d7f171; border: none;
                         border-radius: 20px; color: #2a1e5c; font-size: 20px;
                         font-weight: bold; cursor: pointer; text-transform: uppercase;"
-                            onclick="back()">Back</button>`
-        }
+                            onclick="back()">Back</button>`;
+    }
 
-        function multiOnline() {
-            Swal.fire({
-                text: "Will be available soon!",
-                icon: "error",
-            });
-        }
+    function multiOnline() {
+        Swal.fire({
+            text: "Will be available soon!",
+            icon: "error",
+        });
+    }
 
-        function multiOffline() {
-            window.location = '/tictactoe/multi/offline/'
-        }
+    function multiOffline() {
+        window.location = '/tictactoe/multi/offline/'
+    }
 
-        function back() {
-            document.getElementById("footer-buttons").innerHTML = `<button class="mx-auto btn-block" style="padding: 10px 20px; background-color: #d7f171; border: none;
-                        border-radius: 20px; color: #2a1e5c; font-size: 20px;
-                        font-weight: bold; cursor: pointer; text-transform: uppercase;" onclick="single()">Single
-                            Player</button>
-                        <button class="mx-auto btn-block" style="padding: 10px 20px; background-color: #d7f171; border: none;
-                        border-radius: 20px; color: #2a1e5c; font-size: 20px;
-                        font-weight: bold; cursor: pointer; text-transform: uppercase;"
-                            onclick="multi()">Multiplayer</button>
-                        <button class="mx-auto btn-block" style="padding: 10px 20px; background-color: #d7f171; border: none;
-                        border-radius: 20px; color: #2a1e5c; font-size: 20px;
-                        font-weight: bold; cursor: pointer; text-transform: uppercase;" onclick="leader()"><i
-                                class="fe fe-award" style="padding-right: 5px;"></i>Leaderboard</button>`
-        }
+    function back() {
+        document.getElementById("footer-buttons").innerHTML = footerButtons;
+    }
 
-        function leader() {
-            Swal.fire({
-                text: "Will be available soon!",
-                icon: "error",
-            });
-        }
-    })();
+    function leader() {
+        window.location = "/tictactoe/leaderboard";
+    }
 </script>
 {% endblock %}

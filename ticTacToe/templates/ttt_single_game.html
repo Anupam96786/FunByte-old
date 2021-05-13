@@ -136,7 +136,7 @@ Tic Tac Toe
                         font-weight: bold; cursor: pointer; text-transform: uppercase;">Restart</button>
                         <button style="padding: 10px 20px; background-color: #d7f171; border: none;
                         border-radius: 20px; color: #2a1e5c; font-size: 20px; align-self: center;
-                        font-weight: bold; cursor: pointer; text-transform: uppercase;" onclick="quit()">Quit</button>
+                        font-weight: bold; cursor: pointer; text-transform: uppercase;" id="quit">Quit</button>
                     </div>
                 </div>
             </div>
@@ -412,8 +412,6 @@ Tic Tac Toe
                 setAiPercentage
             }
         })(0);
-
-
 
 
         const gameController = (() => {
@@ -753,6 +751,7 @@ Tic Tac Toe
             }
         })();
 
+
         const displayController = (() => {
             const htmlBoard = Array.from(document.querySelectorAll('button.field'));
             const restart = document.querySelector('.restart');
@@ -883,7 +882,7 @@ Tic Tac Toe
             }
         }
 
-        function quit() {
+        document.getElementById("quit").onclick = function () {
             if (gameBoard.getFields().includes(gameController.getHumanPlayer().getSign()) || score > 0) {
                 if (
                     document.fullscreenElement ||
