@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'secretMessage',
     'rest_framework',
     'ticTacToe',
+    'tRex',
 ]
 
 MIDDLEWARE = [

@@ -1,4 +1,3 @@
-from django.conf.urls import handler400, handler403, handler500
 from django.contrib import admin
 from django.urls import path, include
 from . import views
@@ -10,6 +9,7 @@ urlpatterns = [
     path('worldchat/', include('worldChat.urls')),
     path('secretmessage/', include('secretMessage.urls')),
     path('tictactoe/', include('ticTacToe.urls')),
+    path('trex/', include('tRex.urls')),
 ]
 
 handler400 = views.error_400
