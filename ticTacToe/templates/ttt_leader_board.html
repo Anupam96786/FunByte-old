@@ -1,0 +1,208 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Tic-Tac-Toe
+{% endblock %}
+
+{% load static %}
+
+{% block css %}
+<link href="{% static 'plugins/datatable/dataTables.bootstrap4.min.css' %}" rel="stylesheet" />
+<link href="{% static 'plugins/datatable/responsivebootstrap4.min.css' %}" rel="stylesheet" />
+<style>
+    .no-sort::after {
+        display: none !important;
+    }
+
+    .no-sort::before {
+        display: none !important;
+    }
+
+    .no-sort {
+        pointer-events: none !important;
+        cursor: default !important;
+    }
+</style>
+{% endblock %}
+
+{% block page_header %}
+Leader Board
+{% endblock %}
+
+{% block body %}
+
+<!-- Row -->
+<div class="row">
+    <div class="col-md-12 col-lg-12">
+        <div class="card" id="leaderboard">
+            <div class="card-header">
+                <div>
+                    <h3 class="card-title">Leaderboard</h3>
+                </div>
+                <div class="card-options">
+                    <div class="d-md-flex" id="fulltable">
+                        <a href="#" class="nav-link icon full-screen-link">
+                            <i class="fe fe-minimize"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row" style="padding-bottom: 10px; align-self: center; width: 100%; margin: 0px;">
+                    <div class="col-4 mx-auto" style="padding: 0px;">
+                        <select name="level" class="form-control select2 mx-auto" id="level"
+                            style="min-width: 90px; max-width: 150px;">
+                            <option selected="selected" value="easy">Easy</option>
+                            <option value="moderate">Moderate</option>
+                            <option value="hard">Hard</option>
+                            <option value="unbeatable">Unbeatable</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="table-responsive" style="height: 100%;">
+                    <table id="example" class="table table-striped table-bordered text-nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th class="wd-5p no-sort"></th>
+                                <th class="wd-15p no-sort">Rank</th>
+                                <th class="wd-15p no-sort">User</th>
+                                <th class="wd-20p no-sort">Max score</th>
+                                <th class="wd-15p no-sort">Member since</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-content">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Row End-->
+
+{% endblock %}
+
+{% block js %}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@3/dark.css">
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<script>
+    (() => {
+        $('#fulltable').on('click', function () {
+            // if already full screen; exit
+            // else go fullscreen
+            if (
+                document.fullscreenElement ||
+                document.webkitFullscreenElement ||
+                document.mozFullScreenElement ||
+                document.msFullscreenElement
+            ) {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+            } else {
+                element = $('#leaderboard').get(0);
+                if (element.requestFullscreen) {
+                    element.requestFullscreen();
+                } else if (element.mozRequestFullScreen) {
+                    element.mozRequestFullScreen();
+                } else if (element.webkitRequestFullscreen) {
+                    element.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+                } else if (element.msRequestFullscreen) {
+                    element.msRequestFullscreen();
+                }
+            }
+        });
+    })();
+
+    window.onload = function () {
+        document.getElementById("level").addEventListener("change", getBoard);
+        getBoard();
+    };
+
+    function getBoard() {
+        $.ajax({
+            url: "/tictactoe/leaderboardscore/",
+            type: 'GET',
+            data: { 'csrfmiddlewaretoken': '{{ csrf_token }}', 'level': document.getElementById('level').value },
+            datatype: 'json',
+            success: function (data) {
+                var tableData = data['data'];
+                var tableContent = document.getElementById("table-content");
+                tableContent.innerHTML = '';
+                for (let i = 0; i < tableData.length; i++) {
+                    const element = tableData[i];
+                    var medal = "";
+                    if (i < 5) {
+                        medal = ["🥇", "🥈", "🥉", "🏅", "🎖"][i]
+                    }
+                    if (data['userData']) {
+                        if (data['userData']["user__username"] == element["user__username"]) {
+                            tableContent.innerHTML += `
+                                <tr style="background-color: #17d092;">
+                                    <td style="padding: 0px;"><div style="font-size: 30px; width: fit-content; align-self: center; margin: 0 auto;">${medal}</div></td>
+                                    <td style="color: black;">${i + 1}</td>
+                                    <td style="color: black;">${element["user__username"]}</td>
+                                    <td style="color: black;">${element[document.getElementById('level').value]}</td>
+                                    <td style="color: black;">${element["user__date_joined__date"]}
+                                        <button type="button" class="btn btn-warning btn-sm" style="float: right;">
+                                            <i class="fe fe-share mr-2"></i>Share
+                                        </button>
+                                    </td>
+                                </tr>`;
+                        }
+                        else {
+                            tableContent.innerHTML += `
+                                <tr>
+                                    <td style="padding: 0px;"><div style="font-size: 30px; width: fit-content; align-self: center; margin: 0 auto;">${medal}</div></td>
+                                    <td>${i + 1}</td>
+                                    <td>${element["user__username"]}</td>
+                                    <td>${element[document.getElementById('level').value]}</td>
+                                    <td>${element["user__date_joined__date"]}</td>
+                                </tr>`;
+                        }
+                    }
+                    else {
+                        tableContent.innerHTML += `
+                            <tr>
+                                <td style="padding: 0px;"><div style="font-size: 30px; width: fit-content; align-self: center; margin: 0 auto;">${medal}</div></td>
+                                <td>${i + 1}</td>
+                                <td>${element["user__username"]}</td>
+                                <td>${element[document.getElementById('level').value]}</td>
+                                <td>${element["user__date_joined__date"]}</td>
+                            </tr>`;
+                    }
+                }
+                if (data['userRank'] && data['userRank'] > 5) {
+                    tableContent.innerHTML = `
+                            <tr style="background-color: #17d092;">
+                                <td></td>
+                                <td>${data['userRank']}</td>
+                                <td>${data["userData"]["user__username"]}</td>
+                                <td>${data["userData"][document.getElementById('level').value]}</td>
+                                <td>${data["userData"]["user__date_joined__date"]}
+                                    <button type="button" class="btn btn-warning btn-sm" style="float: right;">
+                                        <i class="fe fe-share mr-2"></i>Share
+                                    </button>
+                                </td>
+                            </tr>` + tableContent.innerHTML;
+                }
+            },
+            error: function () {
+                Swal.fire({
+                    text: "Something went wrong!",
+                    icon: "error",
+                });
+            }
+        });
+    }
+</script>
+
+{% endblock %}

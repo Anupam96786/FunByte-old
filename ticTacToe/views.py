@@ -45,3 +45,36 @@ def max_score(request):
 
 def multi_offline(request):
     return render(request, 'ttt_multi_offline.html')
+
+
+def leader_board(request):
+    return render(request, 'ttt_leader_board.html')
+
+
+@api_view(['GET'])
+def leader_board_score(request):
+    db = MaxScore.objects.order_by(
+        "-{}".format(request.GET['level'])
+        ).values('user__username', request.GET['level'], 'user__date_joined__date')
+    if request.user.is_authenticated:
+        try:
+            userScore = MaxScore.objects.filter(user=request.user).values(
+                'user__username', request.GET['level'], 'user__date_joined__date'
+                )[0]
+            return Response(data={
+                'data': db[0:50],
+                'userData': userScore,
+                'userRank': list(db).index(userScore) + 1
+            }, status=status.HTTP_200_OK)
+        except:
+            return Response(data={
+                'data': db[0:50],
+                'userData': {},
+                'userRank': None
+            }, status=status.HTTP_200_OK)
+    else:
+        return Response(data={
+            'data': db[0:50],
+            'userData': {},
+            'userRank': None
+        }, status=status.HTTP_200_OK)
