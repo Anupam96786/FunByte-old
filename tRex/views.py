@@ -4,6 +4,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from .models import MaxScore
+import json
 
 
 @login_required
@@ -25,3 +26,11 @@ def max_score(request):
         userData.score = request.POST['maxScore']
         userData.save()
         return Response(status=status.HTTP_200_OK)
+
+
+@login_required
+def leader_board(request):
+    if request.method == 'GET':
+        db = MaxScore.objects.order_by('-score').values('user__username', 'score')
+        userScore = MaxScore.objects.filter(user=request.user).values('user__username', 'score')[0]
+        return render(request, 'trex_leaderboard.html', {'data': json.dumps(list(db[0:50])), 'userScore': userScore, 'userRank': list(db).index(userScore) + 1})

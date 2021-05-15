@@ -55,11 +55,11 @@ def leader_board(request):
 def leader_board_score(request):
     db = MaxScore.objects.order_by(
         "-{}".format(request.GET['level'])
-        ).values('user__username', request.GET['level'], 'user__date_joined__date')
+        ).values('user__username', request.GET['level'])
     if request.user.is_authenticated:
         try:
             userScore = MaxScore.objects.filter(user=request.user).values(
-                'user__username', request.GET['level'], 'user__date_joined__date'
+                'user__username', request.GET['level']
                 )[0]
             return Response(data={
                 'data': db[0:50],

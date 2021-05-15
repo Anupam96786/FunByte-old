@@ -48,25 +48,14 @@ Leader Board
                 </div>
             </div>
             <div class="card-body">
-                <div class="row" style="padding-bottom: 10px; align-self: center; width: 100%; margin: 0px;">
-                    <div class="col-4 mx-auto" style="padding: 0px;">
-                        <select name="level" class="form-control select2 mx-auto" id="level"
-                            style="min-width: 90px; max-width: 150px;">
-                            <option selected="selected" value="easy">Easy</option>
-                            <option value="moderate">Moderate</option>
-                            <option value="hard">Hard</option>
-                            <option value="unbeatable">Unbeatable</option>
-                        </select>
-                    </div>
-                </div>
                 <div class="table-responsive" style="height: 100%;">
                     <table id="example" class="table table-striped table-bordered text-nowrap w-100">
                         <thead>
                             <tr>
                                 <th class="wd-5p no-sort"></th>
-                                <th class="wd-15p no-sort">Rank</th>
-                                <th class="wd-15p no-sort">User</th>
-                                <th class="wd-20p no-sort">Score</th>
+                                <th class="wd-10p no-sort">Rank</th>
+                                <th class="wd-25p no-sort">User</th>
+                                <th class="wd-10p no-sort">Score</th>
                             </tr>
                         </thead>
                         <tbody id="table-content">
@@ -120,31 +109,19 @@ Leader Board
             }
         });
     })();
-
-    window.onload = function () {
-        document.getElementById("level").addEventListener("change", getBoard);
-        getBoard();
-    };
-
-    function getBoard() {
-        $.ajax({
-            url: "/tictactoe/leaderboardscore/",
-            type: 'GET',
-            data: { 'csrfmiddlewaretoken': '{{ csrf_token }}', 'level': document.getElementById('level').value },
-            datatype: 'json',
-            success: function (data) {
-                var tableData = data['data'];
-                var tableContent = document.getElementById("table-content");
-                tableContent.innerHTML = '';
-                for (let i = 0; i < tableData.length; i++) {
-                    const element = tableData[i];
-                    var medal = "";
-                    if (i < 5) {
-                        medal = ["🥇", "🥈", "🥉", "🏅", "🎖"][i]
-                    }
-                    if (data['userData']) {
-                        if (data['userData']["user__username"] == element["user__username"]) {
-                            tableContent.innerHTML += `
+    (() => {
+        var tableData = '{{ data | safe }}';
+        tableData = JSON.parse(tableData);
+        var tableContent = document.getElementById("table-content");
+        tableContent.innerHTML = '';
+        for (let i = 0; i < tableData.length; i++) {
+            const element = tableData[i];
+            var medal = "";
+            if (i < 5) {
+                medal = ["🥇", "🥈", "🥉", "🏅", "🎖"][i]
+            }
+            if ("{{ userScore.user__username | safe }}" == element["user__username"]) {
+                tableContent.innerHTML += `
                                 <tr style="background-color: #17d092;">
                                     <td style="padding: 0px;"><div style="font-size: 30px; width: fit-content; align-self: center; margin: 0 auto;">${medal}</div></td>
                                     <td style="color: black;">${i + 1}</td>
@@ -153,51 +130,33 @@ Leader Board
                                             <i class="fe fe-share mr-2"></i>Share
                                         </button>
                                     </td>
-                                    <td style="color: black;">${element[document.getElementById('level').value]}</td>
+                                    <td style="color: black;">${element["score"]}</td>
                                 </tr>`;
-                        }
-                        else {
-                            tableContent.innerHTML += `
+            }
+            else {
+                tableContent.innerHTML += `
                                 <tr>
                                     <td style="padding: 0px;"><div style="font-size: 30px; width: fit-content; align-self: center; margin: 0 auto;">${medal}</div></td>
                                     <td>${i + 1}</td>
                                     <td>${element["user__username"]}</td>
-                                    <td>${element[document.getElementById('level').value]}</td>
+                                    <td>${element["score"]}</td>
                                 </tr>`;
-                        }
-                    }
-                    else {
-                        tableContent.innerHTML += `
-                            <tr>
-                                <td style="padding: 0px;"><div style="font-size: 30px; width: fit-content; align-self: center; margin: 0 auto;">${medal}</div></td>
-                                <td>${i + 1}</td>
-                                <td>${element["user__username"]}</td>
-                                <td>${element[document.getElementById('level').value]}</td>
-                            </tr>`;
-                    }
-                }
-                if (data['userRank'] && data['userRank'] > 5) {
-                    tableContent.innerHTML = `
+            }
+        }
+        if ('{{ userRank | safe }}' > 5) {
+            tableContent.innerHTML = `
                             <tr style="background-color: #17d092;">
                                 <td></td>
-                                <td>${data['userRank']}</td>
-                                <td>${data["userData"]["user__username"]}
+                                <td>{{ userRank | safe }}</td>
+                                <td>{{ userScore.user__username | safe }}
                                     <button type="button" class="btn btn-warning btn-sm" style="float: right;">
-                                        <i class="fe fe-share mr-2"></i>Share
-                                    </button>
+                                            <i class="fe fe-share mr-2"></i>Share
+                                        </button>
                                 </td>
-                                <td>${data["userData"][document.getElementById('level').value]}</td>
+                                <td>{{ userScore.score | safe }}</td>
                             </tr>` + tableContent.innerHTML;
-                }
-            },
-            error: function () {
-                Swal.fire({
-                    text: "Something went wrong!",
-                    icon: "error",
-                });
-            }
-        });
-    }
+        }
+    })();
 </script>
 
 {% endblock %}

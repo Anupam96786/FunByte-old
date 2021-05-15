@@ -444,8 +444,9 @@ T-Rex
                 Press "Space" to jump your Dino and start the game.
                 <button class="mx-auto btn-block" style="padding: 10px 20px; background-color: #d7f171; border: none;
                         border-radius: 20px; color: #2a1e5c; font-size: 20px;
-                        font-weight: bold; cursor: pointer; text-transform: uppercase;" onclick="leader()"><i
-                        class="fe fe-award" style="padding-right: 5px;"></i>Leaderboard</button>
+                        font-weight: bold; cursor: pointer; text-transform: uppercase;"
+                    onclick="window.location='/trex/leaderboard'"><i class="fe fe-award"
+                        style="padding-right: 5px;"></i>Leaderboard</button>
             </div>
         </div>
     </div>
@@ -1059,23 +1060,25 @@ T-Rex
                     this.highestScore = Math.ceil(this.distanceRan);
                     this.distanceMeter.setHighScore(this.highestScore);
                     console.log(Math.ceil(this.highestScore / 40));
-                    maxScore = Math.ceil(this.highestScore / 40);
-                    document.getElementById('maxscore').innerText = maxScore;
-                    $.ajax({
-                        url: "/trex/maxscore/",
-                        type: 'POST',
-                        data: { 'csrfmiddlewaretoken': '{{ csrf_token }}', "maxScore": maxScore },
-                        datatype: 'json',
-                        success: function (data) {
-                            console.log(data);
-                        },
-                        error: function () {
-                            Swal.fire({
-                                text: "Something went wrong!",
-                                icon: "error",
-                            });
-                        }
-                    });
+                    if (maxScore < Math.ceil(this.highestScore / 40)) {
+                        maxScore = Math.ceil(this.highestScore / 40);
+                        document.getElementById('maxscore').innerText = maxScore;
+                        $.ajax({
+                            url: "/trex/maxscore/",
+                            type: 'POST',
+                            data: { 'csrfmiddlewaretoken': '{{ csrf_token }}', "maxScore": maxScore },
+                            datatype: 'json',
+                            success: function (data) {
+                                console.log(data);
+                            },
+                            error: function () {
+                                Swal.fire({
+                                    text: "Something went wrong!",
+                                    icon: "error",
+                                });
+                            }
+                        });
+                    }
                 }
                 // Reset the time clock.
                 this.time = getTimeStamp();
