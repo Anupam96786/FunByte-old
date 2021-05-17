@@ -1,3 +1,4 @@
+import django_heroku
 from pathlib import Path
 import os
 from dotenv import load_dotenv
@@ -152,3 +153,6 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = os.getenv('Email')
 EMAIL_HOST_PASSWORD = os.getenv('Password')
 EMAIL_USE_TLS = True
+
+
+django_heroku.settings(locals())

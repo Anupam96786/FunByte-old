@@ -1,9 +1,10 @@
+from django.contrib.auth.models import User
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from .models import MaxScore
+from .models import MaxScore, UserRoom
 
 
 def index(request):
@@ -78,3 +79,15 @@ def leader_board_score(request):
             'userData': {},
             'userRank': None
         }, status=status.HTTP_200_OK)
+
+
+@login_required
+def multi_online(request):
+    room = UserRoom.objects.get_or_create(user=request.user)
+    return render(request, 'ttt_multi_online.html', {'roomId': room[0].id, 'roomUser': room[0].user, 'mainBoard': room[0].board, 'turn': room[0].turn, 'scoreX': room[0].scoreX, 'scoreO': room[0].scoreO})
+
+
+@login_required
+def multi_online_id(request, roomId):
+    room = UserRoom.objects.get(id=roomId)
+    return render(request, 'ttt_multi_online.html', {'roomId': room.id, 'roomUser': room.user, 'mainBoard': room.board, 'turn': room.turn, 'scoreX': room.scoreX, 'scoreO': room.scoreO})

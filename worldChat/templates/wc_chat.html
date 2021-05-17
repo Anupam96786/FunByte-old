@@ -52,7 +52,7 @@ World Chat
         );
 
         chatSocket.onopen = function (e) {
-            console.log('Chat cocket connected successfully');
+            console.log('Chat socket connected successfully');
         }
 
         chatSocket.onmessage = function (e) {
@@ -94,7 +94,7 @@ World Chat
                     + '/ws/worldchat/'
                 );
                 chatSocket.onopen = function (e) {
-                    console.log('Chat cocket connected successfully');
+                    console.log('Chat socket connected successfully');
                     clearInterval(interval);
                 }
                 console.error('Trying to reconnect');

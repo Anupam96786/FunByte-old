@@ -9,4 +9,6 @@ urlpatterns = [
     path('multi/offline/', views.multi_offline, name='ttt_multi_offline'),
     path('leaderboard/', views.leader_board, name='ttt_leader_board'),
     path('leaderboardscore/', views.leader_board_score, name='ttt_leader_board_score'),
+    path('multi/online/', views.multi_online, name='ttt_multi_online'),
+    path('multi/online/<str:roomId>', views.multi_online_id, name='ttt_multi_online_id'),
 ]
