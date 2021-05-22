@@ -408,7 +408,7 @@ Tic Tac Toe
                 cancelButtonText: "Quit",
             }).then((retry) => {
                 if (retry.isConfirmed) {
-                    window.location = window.location;
+                    window.location.reload();
                 } else {
                     window.location = '/tictactoe/';
                 }
