@@ -15,7 +15,7 @@ Secret Message
 <div class="col-lg-9" style="margin-bottom: 20px;">
     <h5>Share this link with your friends and collect Anonymous Messages</h5>
     <div class="input-group">
-        <input type="text" class="form-control bg-white" value="{{ domain }}/secretmessage/send/{{ id }}" id="smurl"
+        <input type="text" class="form-control bg-white" id="smurl"
             readonly>
         <div class="input-group-append ">
             <button type="button" class="btn btn-primary" onclick="copy()">
@@ -54,7 +54,7 @@ Secret Message
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@3/dark.css">
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
-    document.getElementById("smurl").value = location.protocol + "//" + document.getElementById("smurl").value;
+    document.getElementById("smurl").value = location.protocol + "//" + document.location.host + "/secretmessage/send/{{ id }}";
     function del(id) {
         Swal.fire({
             title: "Are you sure?",

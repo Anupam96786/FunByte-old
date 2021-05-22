@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -90,4 +90,7 @@ def multi_online(request):
 @login_required
 def multi_online_id(request, roomId):
     room = UserRoom.objects.get(id=roomId)
-    return render(request, 'ttt_multi_online.html', {'roomId': room.id, 'roomUser': room.user, 'mainBoard': room.board, 'turn': room.turn, 'scoreX': room.scoreX, 'scoreO': room.scoreO})
+    if room.user == request.user:
+        return redirect('ttt_multi_online')
+    else:
+        return render(request, 'ttt_multi_online.html', {'roomId': room.id, 'roomUser': room.user, 'mainBoard': room.board, 'turn': room.turn, 'scoreX': room.scoreX, 'scoreO': room.scoreO})

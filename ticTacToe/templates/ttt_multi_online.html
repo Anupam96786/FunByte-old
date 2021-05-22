@@ -59,6 +59,19 @@ Tic Tac Toe
 
 {% block body %}
 
+<div class="col-lg-9" style="margin-bottom: 20px;">
+    <h5>Share this link with your friend and play together</h5>
+    <div class="input-group">
+        <input type="text" class="form-control bg-white" id="url"
+            readonly>
+        <div class="input-group-append ">
+            <button type="button" class="btn btn-primary" onclick="copy()">
+                <i class="fa fa-clone " aria-hidden="true"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
 <!-- Row -->
 <div class="row">
     <div class="card">
@@ -155,6 +168,8 @@ Tic Tac Toe
 
 <script>
 
+    document.getElementById("url").value = document.location + "{{ roomId }}";
+
     $('#fulltable').on('click', function () {
         // if already full screen; exit
         // else go fullscreen
@@ -186,6 +201,17 @@ Tic Tac Toe
             }
         }
     });
+
+    function copy() {
+        var copyText = document.getElementById("url");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999);
+        document.execCommand("copy");
+        Swal.fire({
+            title: "URL copied!",
+            icon: "success",
+        });
+    }
 
     (() => {
         var buttons = document.getElementsByClassName("field");
