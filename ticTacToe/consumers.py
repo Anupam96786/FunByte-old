@@ -70,6 +70,16 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         if await update_connected_user(self.room_group_name, self.scope['user']):
             await self.accept()
+            if await get_connected(self.room_group_name) == 2:
+                await self.channel_layer.group_send(
+                    self.room_group_name,
+                    {
+                        'type': 'chat_message',
+                        'board': None,
+                        'currentPlayer': None,
+                        'status': 2
+                    }
+                )
         else:
             await self.close()
 
@@ -77,8 +87,19 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def disconnect(self, close_code):
         # Leave room group
         await update_connected_user(self.room_group_name, self.scope['user'], False)
-        if not await get_connected(self.room_group_name):
+        connectedUsers = await get_connected(self.room_group_name)
+        if not connectedUsers:
             await reset_room(self.room_group_name)
+        elif connectedUsers == 1:
+            await self.channel_layer.group_send(
+                    self.room_group_name,
+                    {
+                        'type': 'chat_message',
+                        'board': None,
+                        'currentPlayer': None,
+                        'status': 1
+                    }
+                )
         await self.channel_layer.group_discard(
             self.room_group_name,
             self.channel_name
@@ -95,7 +116,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
             {
                 'type': 'chat_message',
                 'board': data['board'],
-                'currentPlayer': data['currentPlayer']
+                'currentPlayer': data['currentPlayer'],
+                'status': 0
             }
         )
 
@@ -105,5 +127,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
             'board': event['board'],
-            'currentPlayer': event['currentPlayer']
+            'currentPlayer': event['currentPlayer'],
+            'status': event['status']
         }))

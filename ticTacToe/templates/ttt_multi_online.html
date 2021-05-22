@@ -62,8 +62,7 @@ Tic Tac Toe
 <div class="col-lg-9" style="margin-bottom: 20px;">
     <h5>Share this link with your friend and play together</h5>
     <div class="input-group">
-        <input type="text" class="form-control bg-white" id="url"
-            readonly>
+        <input type="text" class="form-control bg-white" id="url" readonly>
         <div class="input-group-append ">
             <button type="button" class="btn btn-primary" onclick="copy()">
                 <i class="fa fa-clone " aria-hidden="true"></i>
@@ -89,6 +88,7 @@ Tic Tac Toe
                     </div>
                     <div class="card-body mx-auto"
                         style="width: 100%; max-width: 60vh; padding: 0px; padding-bottom: 24px;">
+                        <div id="alerts"></div>
                         <div class="mx-auto" style="width: 100%;">
                             <div style="width: fit-content; display: inline; float: left; padding-left: 5px;">
                                 <h2
@@ -168,7 +168,7 @@ Tic Tac Toe
 
 <script>
 
-    document.getElementById("url").value = document.location + "{{ roomId }}";
+    document.getElementById("url").value = location.protocol + "//" + document.location.host + "/tictactoe/multi/online/{{ roomId }}";
 
     $('#fulltable').on('click', function () {
         // if already full screen; exit
@@ -356,32 +356,46 @@ Tic Tac Toe
 
         chatSocket.onmessage = async function (e) {
             const data = JSON.parse(e.data);
-            console.log(data.board);
-            mainBoard = data.board
-            currentPlayer = data.currentPlayer
-            document.getElementById('turn').innerText = currentPlayer;
-            for (let i = 0; i < mainBoard.length; i++) {
-                if (mainBoard[i]) {
-                    document.getElementById(i).children[0].textContent = mainBoard[i];
+            if (data.status == 0) {
+                console.log(data.board);
+                mainBoard = data.board
+                currentPlayer = data.currentPlayer
+                document.getElementById('turn').innerText = currentPlayer;
+                for (let i = 0; i < mainBoard.length; i++) {
+                    if (mainBoard[i]) {
+                        document.getElementById(i).children[0].textContent = mainBoard[i];
+                    }
                 }
-            }
-            deactivate();
-            if (matchDraw()) {
-                restart();
-            }
-            if (playerWon()) {
-                await sleep(2000);
-                if (currentPlayer == "O") {
-                    scoreX += 1;
-                    document.getElementById("scoreX").innerText = scoreX;
-                } else {
-                    scoreO += 1;
-                    document.getElementById("scoreO").innerText = scoreO;
+                deactivate();
+                if (matchDraw()) {
+                    restart();
                 }
-                console.log(scoreX, scoreO);
-                restart();
+                if (playerWon()) {
+                    await sleep(2000);
+                    if (currentPlayer == "O") {
+                        scoreX += 1;
+                        document.getElementById("scoreX").innerText = scoreX;
+                    } else {
+                        scoreO += 1;
+                        document.getElementById("scoreO").innerText = scoreO;
+                    }
+                    console.log(scoreX, scoreO);
+                    restart();
+                }
+                activate();
+            } else if (data.status == 1) {
+                document.getElementById("alerts").innerHTML = `
+                    <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    Another Player has left!
+                    </div>`
+            } else if (data.status == 2) {
+                document.getElementById("alerts").innerHTML = `
+                    <div class="alert alert-success" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    Another player has joined!
+                    </div>`
             }
-            activate();
         };
 
         chatSocket.onclose = function (e) {
