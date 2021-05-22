@@ -1,3 +1,4 @@
+import django_heroku
 from pathlib import Path
 import os
 from dotenv import load_dotenv
@@ -15,7 +16,7 @@ load_dotenv(dotenv_path=os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -152,3 +153,6 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = os.getenv('Email')
 EMAIL_HOST_PASSWORD = os.getenv('Password')
 EMAIL_USE_TLS = True
+
+
+django_heroku.settings(locals())
