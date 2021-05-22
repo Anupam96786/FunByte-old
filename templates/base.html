@@ -151,66 +151,36 @@
                     <li>
                         {% if request.user.is_authenticated %}
                         {% else %}
-                    <li>
                         <a class="side-menu__item" href="/accounts/login"><span class="btn btn-primary btn-block">Log
                                 In</span></a>
                         <a class="side-menu__item" href="/accounts/signup"><span class="btn btn-primary btn-block">Sign
                                 Up</span></a>
-                    </li>
                     {% endif %}
                     </li>
                     <li>
                         <h3>Main</h3>
                     </li>
-                    <li class="slide">
-                        <a class="side-menu__item" data-toggle="slide" href="#"><i
-                                class="side-menu__icon fe fe-airplay"></i><span
-                                class="side-menu__label">Dashboard</span><i class="angle fa fa-angle-right"></i></a>
-                        <ul class="slide-menu">
-                            <li><a class="slide-item" href="index.html"><span>Analytics Dashboard</span></a></li>
-                            <li><a class="slide-item" href="index2.html"><span>E-Commerce Dashboard</span></a></li>
-                            <li><a class="slide-item" href="index3.html"><span>Sales Dashboard</span></a></li>
-                            <li><a class="slide-item" href="index4.html"><span>IT Dashboard</span></a></li>
-                            <li><a class="slide-item" href="index5.html"><span>Logistics Dashboard</span></a></li>
-                        </ul>
-                    </li>
-                    <li>
+                    <!-- <li>
                         <a class="side-menu__item" href="widgets.html"><i
                                 class="side-menu__icon fe fe-codepen"></i><span
                                 class="side-menu__label">Widgets</span></a>
-                    </li>
+                    </li> -->
                     <li class="slide">
                         <a class="side-menu__item" data-toggle="slide" href="#"><i
-                                class="side-menu__icon fe fe-file-text"></i><span
-                                class="side-menu__label">Forms</span><i class="angle fa fa-angle-right"></i></a>
+                                class="side-menu__icon fe fe-airplay"></i><span
+                                class="side-menu__label">Fun</span><i class="angle fa fa-angle-right"></i></a>
                         <ul class="slide-menu">
-                            <li><a href="form-elements.html" class="slide-item"> Form Elements</a></li>
-                            <li><a href="form-wizard.html" class="slide-item"> Form Wizard</a></li>
-                            <li><a href="wysiwyag.html" class="slide-item"> Form Editor</a></li>
+                            <li><a href="secretmessage" class="slide-item">Secret Message</a></li>
+                            <li><a href="worldchat" class="slide-item">World Chat</a></li>
                         </ul>
                     </li>
                     <li class="slide">
                         <a class="side-menu__item" data-toggle="slide" href="#"><i
-                                class="side-menu__icon fe fe-bar-chart-2"></i><span
-                                class="side-menu__label">Charts</span><i class="angle fa fa-angle-right"></i></a>
-                        <ul class="slide-menu">
-                            <li><a href="chart-chartist.html" class="slide-item">Chartist Charts</a></li>
-                            <li><a href="chart-morris.html" class="slide-item"> Morris Charts</a></li>
-                            <li><a href="chart-js.html" class="slide-item"> Charts js</a></li>
-                            <li><a href="chart-peity.html" class="slide-item"> Pie Charts</a></li>
-                            <li><a href="chart-echart.html" class="slide-item"> Echart Charts</a></li>
-                            <li><a href="chart-flot.html" class="slide-item"> Flot Charts</a></li>
-                            <li><a href="chart-nvd3.html" class="slide-item"> Nvd3 Charts</a></li>
-                            <li><a href="chart-dygraph.html" class="slide-item">Dygraph Charts</a></li>
-                        </ul>
-                    </li>
-                    <li class="slide">
-                        <a class="side-menu__item" data-toggle="slide" href="#"><i
-                                class="side-menu__icon fe fe-layout"></i><span class="side-menu__label">Tables</span><i
+                                class="side-menu__icon fe fe-airplay"></i><span class="side-menu__label">Games</span><i
                                 class="angle fa fa-angle-right"></i></a>
                         <ul class="slide-menu">
-                            <li><a href="tables.html" class="slide-item">Default table</a></li>
-                            <li><a href="datatable.html" class="slide-item"> Data Tables</a></li>
+                            <li><a class="slide-item" href="tictactoe"><span>Tic Tac Toe</span></a></li>
+                            <li><a class="slide-item" href="trex"><span>T-Rex</span></a></li>
                         </ul>
                     </li>
                 </ul>
@@ -255,7 +225,7 @@
     <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
 
     <!--Bootstrap.min js-->
-    <!-- <script src="{% static 'plugins/bootstrap/js/popper.min.js' %}"></script> -->
+    <script src="{% static 'plugins/bootstrap/js/popper.min.js' %}"></script>
     <script src="{% static 'plugins/bootstrap/js/bootstrap.min.js' %}"></script>
 
     <!-- Star Rating js-->
