@@ -53,16 +53,28 @@ def user_signup(request):
                 'username': username, 'email': request.POST['email'],
                 'firstname': request.POST['firstname'], 'lastname': request.POST['lastname']})
         else:
-            user = User.objects.create_user(
-                username=username, password=request.POST['password'], is_active=False,
-                first_name=request.POST['firstname'], last_name=request.POST['lastname'], email=request.POST['email']
-                )
-            token = Token.objects.create(user=user, purpose='ua').token
-            domain = get_current_site(request).domain
-            mail_subject = 'Account Activation'
-            mail_body = 'Please click on the link below to activate your account.\nIf it is a mistake then don\'t click on the link.\n{}://{}/accounts/useractivation/{}'.format(request.scheme, domain, token)
-            EmailMessage(mail_subject, mail_body, to=[request.POST['email']]).send()
-            return render(request, 'account_activation.html', {'email': request.POST['email']})
+            if request.is_secure():
+                user = User.objects.create_user(
+                    username=username, password=request.POST['password'], is_active=False,
+                    first_name=request.POST['firstname'], last_name=request.POST['lastname'], email=request.POST['email']
+                    )
+                token = Token.objects.create(user=user, purpose='ua').token
+                domain = get_current_site(request).domain
+                mail_subject = 'Account Activation'
+                mail_body = 'Please click on the link below to activate your account.\nIf it is a mistake then don\'t click on the link.\nhttps://{}/accounts/useractivation/{}'.format(domain, token)
+                EmailMessage(mail_subject, mail_body, to=[request.POST['email']]).send()
+                return render(request, 'account_activation.html', {'email': request.POST['email']})
+            else:
+                user = User.objects.create_user(
+                    username=username, password=request.POST['password'], is_active=False,
+                    first_name=request.POST['firstname'], last_name=request.POST['lastname'], email=request.POST['email']
+                    )
+                token = Token.objects.create(user=user, purpose='ua').token
+                domain = get_current_site(request).domain
+                mail_subject = 'Account Activation'
+                mail_body = 'Please click on the link below to activate your account.\nIf it is a mistake then don\'t click on the link.\nhttp://{}/accounts/useractivation/{}'.format(domain, token)
+                EmailMessage(mail_subject, mail_body, to=[request.POST['email']]).send()
+                return render(request, 'account_activation.html', {'email': request.POST['email']})
 
 
 def user_activation(request, token):
