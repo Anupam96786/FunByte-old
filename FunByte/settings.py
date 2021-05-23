@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'ticTacToe',
     'tRex',
-    'bugReport',
+    'contactUs',
 ]
 
 MIDDLEWARE = [

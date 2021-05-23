@@ -10,7 +10,7 @@ urlpatterns = [
     path('secretmessage/', include('secretMessage.urls')),
     path('tictactoe/', include('ticTacToe.urls')),
     path('trex/', include('tRex.urls')),
-    path('bugreport/', include('bugReport.urls')),
+    path('contactus/', include('contactUs.urls')),
 ]
 
 handler400 = views.error_400
