@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Bug Reports
+{% endblock %}
+
+{% load static %}
+
+{% block css %}
+
+{% endblock %}
+
+{% block page_header %}
+Bug Reports
+{% endblock %}
+
+{% block body %}
+<div class="btn-list text-right" style="margin-bottom: 10px;">
+    <a href="/bugreport/report/" class="btn btn-success mb-1">Report A Bug</a>
+</div>
+
+<!-- Row -->
+{% for report in reports %}
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">{{ report.title }}</h3>
+    </div>
+    <div class="card-body">
+        {{ report.description }}
+    </div>
+</div>
+{% endfor %}
+<!-- End Row-->
+
+{% endblock %}

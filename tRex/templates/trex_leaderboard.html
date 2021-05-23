@@ -156,6 +156,26 @@ Leader Board
                                 <td>{{ userScore.score | safe }}</td>
                             </tr>` + tableContent.innerHTML;
         }
+        window.onload = (event) => {
+            shareButtons = document.getElementsByClassName("btn btn-warning btn-sm");
+            for (let i = 0; i < shareButtons.length; i++) {
+                const shareButton = shareButtons[i];
+                shareButton.addEventListener('click', event => {
+                    if (navigator.share) {
+                        navigator.share({
+                            title: 'Check This Out!',
+                            text: 'Check This Out! I have ranked {{ userRank | safe }} in T-Rex game, can you beat me?',
+                            url: '/trex/'
+                        }).then(() => {
+                            console.log('Thanks for sharing!');
+                        }).catch(console.error);
+                    } else {
+                        shareDialog.classList.add('is-open');
+                    }
+                });
+
+            }
+        }
     })();
 </script>
 

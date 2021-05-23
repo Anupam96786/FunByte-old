@@ -379,7 +379,8 @@ T-Rex
                             id="maxscore"></h2>
                     </div>
                 </div>
-                <div id="main-frame-error" class="interstitial-wrapper mx-auto" jstcache="0" style="max-width: 600px;">
+                <div id="main-frame-error" class="interstitial-wrapper mx-auto" jstcache="0"
+                    style="max-width: 600px; height: 100%;">
                     <div id="main-frame-notchrome" style="display:none; margin-top:50px;">Sorry, this game only runs on
                         the Google Chrome or Microsoft Edge!</div>
                     <div id="offline-resources" jstcache="0">
@@ -2450,6 +2451,7 @@ T-Rex
         } else {
             document.getElementById("main-frame-notchrome").style.display = "";
         }
+        document.getElementsByClassName("runner-container")[0].style.height = "100%";
     })();
 </script>
 {% endblock %}

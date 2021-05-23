@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Contact Us
+{% endblock %}
+
+{% load static %}
+
+{% block css %}
+
+{% endblock %}
+
+{% block page_header %}
+Contact Us
+{% endblock %}
+
+{% block body %}
+<!-- Row -->
+<div class="card">
+    <div class="card-body">
+        <form method="POST" id="reportsubmit">
+            {% csrf_token %}
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label class="form-label">Title (within 50 words)</label>
+                <input type="text" class="form-control" name="title" placeholder="Title (within 50 words)" id="title">
+                <div class="col-12">
+                    <p style="color: rgb(255, 52, 52);" id="message"></p>
+                </div>
+            </div>
+            <div class="form-group" style="margin-bottom: 25px;">
+                <label class="form-label">Description</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="6" placeholder="Description"
+                    name="description"></textarea>
+            </div>
+            <div class="btn-list text-right" style="margin-bottom: 10px;">
+                <i class="btn btn-success mb-1" onclick="post()">Post</i>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- End Row-->
+
+{% endblock %}
+
+{% block js %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@3/dark.css">
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<script>
+    function post() {
+        if (document.getElementById("title").value.length > 50) {
+            document.getElementById("message").innerText = "character count = " + document.getElementById("title").value.length;
+        } else {
+            document.getElementById("reportsubmit").submit();
+        }
+    }
+</script>
+
+{% endblock %}

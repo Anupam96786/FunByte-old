@@ -15,13 +15,18 @@ Secret Message
 <div class="col-lg-9" style="margin-bottom: 20px;">
     <h5>Share this link with your friends and collect Anonymous Messages</h5>
     <div class="input-group">
-        <input type="text" class="form-control bg-white" id="smurl"
-            readonly>
+        <input type="text" class="form-control bg-white" id="smurl" readonly>
         <div class="input-group-append ">
             <button type="button" class="btn btn-primary" onclick="copy()">
                 <i class="fa fa-clone " aria-hidden="true"></i>
             </button>
         </div>
+    </div>
+    <div style="padding-top: 5px;">
+        <p style="display: inline; width: fit-content; margin-right: 5px;">Or, </p>
+        <button type="button" class="btn btn-primary btn-sm" style="display: inline;" id="share">
+            <i class="fe fe-share mr-2"></i>Share
+        </button>
     </div>
 </div>
 
@@ -96,5 +101,21 @@ Secret Message
             icon: "success",
         });
     }
+    (() => {
+        shareButton = document.getElementById('share');
+        shareButton.addEventListener('click', event => {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Secret Message!',
+                    text: 'Send secret message to {{ request.user.username }}🤫, I will never know who sent me which message🤔\nIt\'s fun, Try here👇\n',
+                    url: '/secretmessage/send/{{ id }}'
+                }).then(() => {
+                    console.log('Thanks for sharing!');
+                }).catch(console.error);
+            } else {
+                shareDialog.classList.add('is-open');
+            }
+        });
+    })();
 </script>
 {% endblock %}
