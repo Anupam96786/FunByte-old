@@ -189,6 +189,23 @@ Leader Board
                                 <td>${data["userData"][document.getElementById('level').value]}</td>
                             </tr>` + tableContent.innerHTML;
                 }
+                shareButtons = document.getElementsByClassName("btn btn-warning btn-sm");
+                for (let i = 0; i < shareButtons.length; i++) {
+                    const shareButton = shareButtons[i];
+                    shareButton.addEventListener('click', event => {
+                        if (navigator.share) {
+                            navigator.share({
+                                title: 'Check This Out!',
+                                text: `Check This Out! I have ranked ${data['userRank']} in ${document.getElementById('level').value} mode in this game Tic-Tac-Toe, can you beat me?`,
+                                url: '/tictactoe/single/'
+                            }).then(() => {
+                                console.log('Thanks for sharing!');
+                            }).catch(console.error);
+                        } else {
+                            shareDialog.classList.add('is-open');
+                        }
+                    });
+                }
             },
             error: function () {
                 Swal.fire({
