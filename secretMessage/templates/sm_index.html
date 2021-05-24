@@ -12,46 +12,50 @@ Secret Message
 
 {% block body %}
 
-<div class="col-lg-9" style="margin-bottom: 20px;">
-    <h5>Share this link with your friends and collect Anonymous Messages</h5>
-    <div class="input-group">
-        <input type="text" class="form-control bg-white" id="smurl" readonly>
-        <div class="input-group-append ">
-            <button type="button" class="btn btn-primary" onclick="copy()">
-                <i class="fa fa-clone " aria-hidden="true"></i>
-            </button>
-        </div>
-    </div>
-    <div style="padding-top: 5px;">
-        <p style="display: inline; width: fit-content; margin-right: 5px;">Or, </p>
-        <button type="button" class="btn btn-primary btn-sm" style="display: inline;" id="share">
-            <i class="fe fe-share mr-2"></i>Share
-        </button>
-    </div>
-</div>
-
-<h4>Anonymous Message Timeline</h4>
-<div class="row">
-    {%for message in messages %}
-    <div class="col-md-12 col-xl-4" id="{{ message.id }}">
-        <div class="card text-white bg-primary">
-            <div class="card-header ">
-                <h3 class="card-title"> - Anonymous</h3>
-                <div class="card-options">
-                    <a href="#" class="card-options-collapse" data-toggle="card-collapse" style="margin-right: 20px;"><i
-                            class="fe fe-chevron-up text-white"></i></a>
-                    <a href="#" class="card-options-remove" id="b{{ message.id }}" onclick="del(this.id.slice(1))"><i
-                            class="fa fa-trash text-white"></i></a>
+<div class="card">
+    <div class="card-body">
+        <div class="col-lg-9" style="margin-bottom: 20px;">
+            <h5>Share this link with your friends and collect Anonymous Messages</h5>
+            <div class="input-group">
+                <input type="text" class="form-control bg-white" id="smurl" readonly>
+                <div class="input-group-append ">
+                    <button type="button" class="btn btn-primary" onclick="copy()">
+                        <i class="fa fa-clone " aria-hidden="true"></i>
+                    </button>
                 </div>
             </div>
-            <div class="card-body" style="padding: 15px; padding-top: 0px; padding-bottom: 5px;">
-                <i class="fa fa-quote-left"></i>
-                <p class="card-text">{{ message.message }}</p>
-                <i class="fa fa-quote-right" style="margin-left: 95%;"></i>
+            <div style="padding-top: 5px;">
+                <p style="display: inline; width: fit-content; margin-right: 5px;">Or, </p>
+                <button type="button" class="btn btn-primary btn-sm" style="display: inline;" id="share">
+                    <i class="fe fe-share mr-2"></i>Share
+                </button>
             </div>
         </div>
+
+        <h4>Anonymous Message Timeline</h4>
+        <div class="row">
+            {%for message in messages %}
+            <div class="col-md-12 col-xl-4" id="{{ message.id }}">
+                <div class="card text-white bg-primary">
+                    <div class="card-header ">
+                        <h3 class="card-title"> - Anonymous</h3>
+                        <div class="card-options">
+                            <a href="#" class="card-options-collapse" data-toggle="card-collapse"
+                                style="margin-right: 20px;"><i class="fe fe-chevron-up text-white"></i></a>
+                            <a href="#" class="card-options-remove" id="b{{ message.id }}"
+                                onclick="del(this.id.slice(1))"><i class="fa fa-trash text-white"></i></a>
+                        </div>
+                    </div>
+                    <div class="card-body" style="padding: 15px; padding-top: 0px; padding-bottom: 5px;">
+                        <i class="fa fa-quote-left"></i>
+                        <p class="card-text">{{ message.message }}</p>
+                        <i class="fa fa-quote-right" style="margin-left: 95%;"></i>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
-    {% endfor %}
 </div>
 {% endblock %}
 
