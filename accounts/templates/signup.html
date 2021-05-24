@@ -45,7 +45,7 @@ Sign Up
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label>Username:</label>
-                                                <input type="text" name="username" class="form-control"
+                                                <input type="text" name="username" class="form-control" id="username"
                                                     placeholder="Enter Your Username" value="{{ username }}" />
                                                 <p style="color: rgb(255, 52, 52);">{{ umessage }}</p>
                                             </div>
@@ -178,32 +178,39 @@ Sign Up
                 autoButtonsPrevClass: 'btn btn-info',
                 stepNumberClass: 'badge badge-pill badge-primary mr-1',
                 onSubmit: function () {
-                    if ($("#checkbox2").prop('checked') == true) {
-                        if ($('#password').val() == $('#cpassword').val()) {
-                            if ($('#password').val() == "") {
+                    if (! /^[0-9a-zA-Z]+$/.test($("#username").val())) {
+                        Swal.fire({
+                            text: "Enter a valid username.This value may contain only letters (a to z, A to Z) and numbers (0 to 9).",
+                            icon: "warning",
+                        });
+                    } else {
+                        if ($("#checkbox2").prop('checked') == true) {
+                            if ($('#password').val() == $('#cpassword').val()) {
+                                if ($('#password').val() == "") {
+                                    Swal.fire({
+                                        text: "Please enter a password",
+                                        icon: "warning",
+                                    });
+                                    return false;
+                                }
+                                else {
+                                    return true;
+                                }
+                            } else {
                                 Swal.fire({
-                                    text: "Please enter a password",
+                                    text: "Password mismatched",
                                     icon: "warning",
                                 });
                                 return false;
-                            }
-                            else {
-                                return true;
-                            }
-                        } else {
+                            };
+                        }
+                        else {
                             Swal.fire({
-                                text: "Password mismatched",
+                                text: "Please accept T&C to proceed!",
                                 icon: "warning",
                             });
                             return false;
-                        };
-                    }
-                    else {
-                        Swal.fire({
-                            text: "Please accept T&C to proceed!",
-                            icon: "warning",
-                        });
-                        return false;
+                        }
                     }
                 }
             }
