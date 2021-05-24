@@ -87,14 +87,17 @@ def user_logout(request):
     return redirect('home')
 
 
+@login_required
 def change_password(request):
     if request.method == 'GET':
         return render(request, 'change_password.html')
     if request.method == 'POST':
         user = authenticate(request, username=request.user.username, password=request.POST['old_password'])
         if user is not None:
-            user.password = request.POST['new_password']
+            user.set_password(request.POST['new_password'])
             user.save()
+            login(request, user)
+            return redirect('home')
         else:
             return render(request, 'change_password.html', {'message': 'Please enter correct password'})
 
