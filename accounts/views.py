@@ -126,7 +126,7 @@ def fp_change(request, token):
             token = Token.objects.get(token=token)
             if token.purpose == 'fp':
                 user = token.user
-                user.password = request.POST['password']
+                user.set_password(request.POST['password'])
                 user.save()
                 token.delete()
                 login(request, user)
