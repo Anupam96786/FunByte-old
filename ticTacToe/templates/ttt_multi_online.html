@@ -59,22 +59,27 @@ Tic Tac Toe
 
 {% block body %}
 
-<div class="col-lg-9" style="margin-bottom: 20px;">
-    <h5>Share this link with your friend and play together</h5>
-    <div class="input-group">
-        <input type="text" class="form-control bg-white" id="url" readonly>
-        <div class="input-group-append ">
-            <button type="button" class="btn btn-primary" onclick="copy()">
-                <i class="fa fa-clone " aria-hidden="true"></i>
-            </button>
-        </div>
-    </div>
-</div>
-
 <!-- Row -->
 <div class="row">
     <div class="card">
         <div class="card-body" style="padding-left: 0px; padding-right: 0px;">
+            <div class="col-lg-9" style="margin-bottom: 20px;">
+                <h5>Share this link with your friend and play together</h5>
+                <div class="input-group">
+                    <input type="text" class="form-control bg-white" id="url" readonly>
+                    <div class="input-group-append ">
+                        <button type="button" class="btn btn-primary" onclick="copy()">
+                            <i class="fa fa-clone " aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+                <div style="padding-top: 5px;">
+                    <p style="display: inline; width: fit-content; margin-right: 5px;">Or, </p>
+                    <button type="button" class="btn btn-primary btn-sm" style="display: inline;" id="share">
+                        <i class="fe fe-share mr-2"></i>Share
+                    </button>
+                </div>
+            </div>
             <div class="col-md-12 col-lg-4 mx-auto" style="min-width: fit-content; max-width: 60vh;">
                 <div class="card" style="background-color: #2a1e5c;" id="gamecard">
                     <div class="card-header">
@@ -450,7 +455,20 @@ Tic Tac Toe
                 window.location = '/tictactoe/';
             }
         }
-
+        shareButton = document.getElementById('share');
+        shareButton.addEventListener('click', event => {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Tic Tac Toe!',
+                    text: 'Come On! Let\'s play Tic-Tac-Toe.\n{{ request.user.first_name }} has invited you to play Tic-Tac-Toe with him. Click on the link below to play 👇',
+                    url: '/tictactoe/multi/online/{{ roomId }}'
+                }).then(() => {
+                    console.log('Thanks for sharing!');
+                }).catch(console.error);
+            } else {
+                shareDialog.classList.add('is-open');
+            }
+        });
     })();
 
 </script>
