@@ -87,13 +87,51 @@ def user_logout(request):
     return redirect('home')
 
 
+@login_required
 def change_password(request):
     if request.method == 'GET':
         return render(request, 'change_password.html')
     if request.method == 'POST':
         user = authenticate(request, username=request.user.username, password=request.POST['old_password'])
         if user is not None:
-            user.password = request.POST['new_password']
+            user.set_password(request.POST['new_password'])
             user.save()
+            login(request, user)
+            return redirect('home')
         else:
             return render(request, 'change_password.html', {'message': 'Please enter correct password'})
+
+
+def forgot_password(request):
+    if request.method == 'GET':
+        return render(request, 'forgot_password.html')
+    if request.method == 'POST':
+        try:
+            user = User.objects.get(email=request.POST['email'])
+            token = Token.objects.get_or_create(user=user, purpose='fp')[0].token
+            domain = get_current_site(request).domain
+            mail_subject = 'Change Password'
+            mail_body = 'Please click on the link below to change your password.\nIf it is a mistake then don\'t click on the link.\nhttps://{}/accounts/fpchange/{}'.format(domain, token)
+            EmailMessage(mail_subject, mail_body, to=[request.POST['email']]).send()
+            return render(request, 'fp_email_sent.html', {'email': request.POST['email']})
+        except:
+            return render(request, 'forgot_password.html', {'message': 'Not a registered email'})
+
+
+def fp_change(request, token):
+    if request.method == 'GET':
+        return render(request, 'fp_change.html')
+    if request.method == 'POST':
+        try:
+            token = Token.objects.get(token=token)
+            if token.purpose == 'fp':
+                user = token.user
+                user.set_password(request.POST['password'])
+                user.save()
+                token.delete()
+                login(request, user)
+                return redirect('home')
+            else:
+                return render(request, '400.html')
+        except:
+            return render(request, '400.html')
