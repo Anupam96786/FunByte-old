@@ -36,6 +36,10 @@ World Chat
 {% endblock %}
 
 {% block js %}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@3/dark.css">
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
 <script>
     (() => {
         if (location.protocol === 'https:') {
@@ -45,20 +49,21 @@ World Chat
             var protocol = 'ws://'
         }
 
-        var chatSocket = new WebSocket(
-            protocol
-            + window.location.host
-            + '/ws/worldchat/'
-        );
+        function connect() {
+            const chatSocket = new WebSocket(
+                protocol
+                + window.location.host
+                + '/ws/worldchat/'
+            );
 
-        chatSocket.onopen = function (e) {
-            console.log('Chat socket connected successfully');
-        }
+            chatSocket.onopen = function (e) {
+                console.log('Chat socket connected successfully');
+            }
 
-        chatSocket.onmessage = function (e) {
-            const data = JSON.parse(e.data);
-            if (data.username == '{{ request.user.username }}') {
-                document.getElementById('chat-log').innerHTML += `
+            chatSocket.onmessage = function (e) {
+                const data = JSON.parse(e.data);
+                if (data.username == '{{ request.user.username }}') {
+                    document.getElementById('chat-log').innerHTML += `
             <div class="d-flex justify-content-end ">
                 <div class="msg_cotainer_send" style="margin-right: 5px;">
                     ${data.message}
@@ -68,9 +73,9 @@ World Chat
                 </div>
             </div>
             `
-            }
-            else {
-                document.getElementById('chat-log').innerHTML += `
+                }
+                else {
+                    document.getElementById('chat-log').innerHTML += `
             <div class="d-flex justify-content-start">
                 <div class="img_cont_msg">
                     <i class="fa fa-angle-double-left"></i>
@@ -82,24 +87,55 @@ World Chat
                 </div>
             </div>
             `
-            }
-        };
-
-        chatSocket.onclose = function (e) {
-            console.error('Chat socket closed unexpectedly');
-            var interval = setInterval(function () {
-                chatSocket = new WebSocket(
-                    protocol
-                    + window.location.host
-                    + '/ws/worldchat/'
-                );
-                chatSocket.onopen = function (e) {
-                    console.log('Chat socket connected successfully');
-                    clearInterval(interval);
                 }
-                console.error('Trying to reconnect');
-            }, 5000);
-        };
+            };
+
+            chatSocket.onclose = function (e) {
+                console.error('Chat socket closed unexpectedly');
+                let timerInterval;
+                Swal.fire({
+                    title: 'Disconnected!',
+                    html: 'Reconnecting in <strong></strong> seconds...<br>Please Wait...<br><p style="font-size: small;">or,<br>back to Home</p>' +
+                        '<button id="home" class="btn btn-primary">' +
+                        'Home' +
+                        '</button>',
+                    timer: 5000,
+                    timerProgressBar: true,
+                    allowOutsideClick: false,
+                    confirmButtonText: "Home",
+                    didOpen: () => {
+                        Swal.showLoading();
+                        const content = Swal.getHtmlContainer()
+                        content.querySelector('#home').addEventListener('click', () => {
+                            window.location = '/';
+                        });
+                        if (content) {
+                            const b = content.querySelector('strong')
+                            if (b) {
+                                b.textContent = Math.round(Swal.getTimerLeft() / 1000);
+                            }
+                        }
+                        timerInterval = setInterval(() => {
+                            const content = Swal.getHtmlContainer()
+                            if (content) {
+                                const b = content.querySelector('strong')
+                                if (b) {
+                                    b.textContent = Math.round(Swal.getTimerLeft() / 1000);
+                                }
+                            }
+                        }, 1000)
+                    },
+                    didDestroy: () => {
+                        clearInterval(timerInterval);
+                    }
+                });
+                var interval = setTimeout(function () {
+                    connect();
+                }, 3000);
+            };
+        }
+
+        connect();
 
         document.getElementById('chat-message-input').focus();
         document.getElementById('chat-message-input').onkeyup = function (e) {
