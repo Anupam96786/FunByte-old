@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Profile
+{% endblock %}
+
+{% load static %}
+
+{% block page_header %}
+Profile
+{% endblock %}
+
+{% block body %}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-profile overflow-hidden">
+            <div class="card-body text-center">
+                <div class=" card-profile">
+                    <div class="row justify-content-center">
+                        <a href="#">
+                            <img src="{% static 'images/users/female/2.jpg' %}" class="avatar-xxl rounded-circle"
+                                alt="profile">
+                        </a>
+                    </div>
+                </div>
+                <h3 class="mt-3 text-white mb-0">{{ user.first_name }} {{ user.last_name }}</h3>
+                <h7 class="mt-3 text-white mb-0">@{{ user.username }}</h7><br><br>
+                <h7 class="mt-3 text-white mb-0">Member since : {{ user.date_joined.date }}</h7>
+                <div class="socials text-center mt-3">
+                    {% if user.profile.facebook %}
+                    <a href="{{ user.profile.facebook }}" class="btn btn-circle btn-primary"><i
+                            class="fa fa-facebook"></i></a>
+                    {% endif %}
+                    {% if user.profile.instagram %}
+                    <a href="{{ user.profile.instagram }}" class="btn btn-circle btn-danger " target="blank"><i
+                            class="fa fa-instagram"></i></a>
+                    {% endif %}
+                    {% if user.profile.twitter %}
+                    <a href="{{ user.profile.twitter }}" class="btn btn-circle btn-info "><i
+                            class="fa fa-twitter"></i></a>
+                    {% endif %}
+                    {% if user.profile.youtube %}
+                    <a href="{{ user.profile.youtube }}" class="btn btn-circle btn-danger "><i
+                            class="fa fa-youtube-play"></i></a>
+                    {% endif %}
+                    {% if user.profile.website %}
+                    <a href="{{ user.profile.website }}" class="btn btn-circle btn-warning "><i
+                            class="fa fa-globe"></i></a>
+                    {% endif %}
+                </div>
+                {% if user == request.user %}
+                <a href="/accounts/profile/edit/" class="btn btn-primary" style="margin-top: 10px;"><i
+                        class="fa fa-pencil"></i> Edit
+                    profile</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body pb-0">
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade active show" id="tabs-icons-text-1" role="tabpanel"
+                        aria-labelledby="tabs-icons-text-1-tab">
+                        <div class="table-responsive mb-3">
+                            <table class="table row table-borderless w-100 m-0">
+                                <tbody class="col-lg-6 p-0">
+                                    <tr>
+                                        <td><strong>Full Name : </strong>{{ user.first_name }} {{ user.last_name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Gender : </strong>
+                                            {% if user.profile.gender %}
+                                            {{ user.profile.gender }}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tbody class="col-lg-6 p-0">
+                                    <tr>
+                                        <td><strong>Website : </strong>
+                                            {% if user.profile.website %}
+                                            <a href="{{ user.profile.website }}">{{ user.profile.website }}</a>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Email : </strong>
+                                            {% if user.profile.show_email %}
+                                            {{ user.email }}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title"><strong>About</strong></h3>
+            </div>
+            <div class="card-body">
+                {{ user.profile.about }}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
