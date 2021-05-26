@@ -30,3 +30,6 @@ class Profile(models.Model):
     youtube = models.CharField(max_length=100, blank=True, null=True)
     website = models.CharField(max_length=100, blank=True, null=True)
     about = models.TextField(blank=True, null=True)
+
+    def __str__(self) -> str:
+        return self.user.username
