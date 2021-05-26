@@ -479,21 +479,6 @@ T-Rex
         // while (i--) {
         //     console.log(localStorage.getItem(keys[i]));
         // }
-        if ("{{ request.user.is_authenticated }}" == "False") {
-            Swal.fire({
-                title: "Warning!",
-                text: "You are not logged in. So your scores will not be saved. But still you can play.",
-                icon: "warning",
-                confirmButtonText: "Login",
-                showCancelButton: true,
-                cancelButtonText: "Play",
-                allowOutsideClick: false,
-            }).then((login) => {
-                if (login.isConfirmed) {
-                    window.location = '/accounts/login/';
-                }
-            });
-        }
         var maxScore;
         if ("{{ request.user.is_authenticated }}" == "True") {
             $.ajax({
@@ -515,6 +500,19 @@ T-Rex
         } else {
             maxScore = 0;
             document.getElementById('maxscore').innerText = maxScore;
+            Swal.fire({
+                title: "Warning!",
+                text: "You are not logged in. So your scores will not be saved. But still you can play.",
+                icon: "warning",
+                confirmButtonText: "Login",
+                showCancelButton: true,
+                cancelButtonText: "Play",
+                allowOutsideClick: false,
+            }).then((login) => {
+                if (login.isConfirmed) {
+                    window.location = '/accounts/login/';
+                }
+            });
         }
         /**
         * T-Rex runner.

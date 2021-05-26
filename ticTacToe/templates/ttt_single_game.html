@@ -188,28 +188,77 @@ Tic Tac Toe
         var maxScore = 0;
         var gamePlayed = 0;
 
-        $.ajax({
-            url: "/tictactoe/maxscore/",
-            type: 'GET',
-            data: { 'csrfmiddlewaretoken': '{{ csrf_token }}', 'level': '{{ level }}' },
-            datatype: 'json',
-            success: function (data) {
-                maxScore = data['maxScore'];
-                document.getElementById('maxscore').innerText = maxScore;
-            },
-            error: function () {
-                Swal.fire({
-                    text: "Something went wrong!",
-                    icon: "error",
-                });
-            }
-        });
+        if ("{{ request.user.is_authenticated }}" == "True") {
+            $.ajax({
+                url: "/tictactoe/maxscore/",
+                type: 'GET',
+                data: { 'csrfmiddlewaretoken': '{{ csrf_token }}', 'level': '{{ level }}' },
+                datatype: 'json',
+                success: function (data) {
+                    maxScore = data['maxScore'];
+                    document.getElementById('maxscore').innerText = maxScore;
+                },
+                error: function () {
+                    Swal.fire({
+                        text: "Something went wrong!",
+                        icon: "error",
+                    });
+                }
+            });
+        } else {
+            document.getElementById('maxscore').innerText = maxScore;
+            Swal.fire({
+                title: "Warning!",
+                text: "You are not logged in. So your scores will not be saved. But still you can play.",
+                icon: "warning",
+                confirmButtonText: "Login",
+                showCancelButton: true,
+                cancelButtonText: "Play",
+                allowOutsideClick: false,
+            }).then((login) => {
+                if (login.isConfirmed) {
+                    window.location = '/accounts/login/';
+                }
+            });
+        }
+
 
         function updateScore() {
             document.getElementById('score').innerText = score;
             if (score > maxScore) {
                 maxScore = score;
                 document.getElementById('maxscore').innerText = maxScore;
+                if ("{{ request.user.is_authenticated }}" == "True") {
+                    $.ajax({
+                        url: "/tictactoe/maxscore/",
+                        type: 'POST',
+                        data: { 'csrfmiddlewaretoken': '{{ csrf_token }}', 'level': '{{ level }}', 'maxScore': maxScore },
+                        datatype: 'json',
+                        success: function (data) {
+                            console.log(data);
+                        },
+                        error: function () {
+                            Swal.fire({
+                                text: "Something went wrong!",
+                                icon: "error",
+                            });
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        title: "Warning!",
+                        text: "You are not logged in. So your scores will not be saved.",
+                        icon: "warning",
+                        confirmButtonText: "Login",
+                        showCancelButton: true,
+                        cancelButtonText: "Play",
+                        allowOutsideClick: false,
+                    }).then((login) => {
+                        if (login.isConfirmed) {
+                            window.location = '/accounts/login/';
+                        }
+                    });
+                }
             }
         }
 
@@ -592,16 +641,13 @@ Tic Tac Toe
                     gamePlayed += 1;
                     Swal.fire({
                         title: "Its a draw!",
-                        text: "Want to play again?",
+                        timer: 2000,
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                        timerProgressBar: true,
                         icon: "warning",
-                        showCancelButton: true,
-                    }).then((play) => {
-                        if (play.isConfirmed) {
-                            gameController.restart();
-                        } else {
-                            window.location = '/tictactoe/'
-                        }
                     });
+                    gameController.restart();
                 }
                 else {
                     console.log(`The winner is player ${sign}`);
@@ -634,22 +680,16 @@ Tic Tac Toe
                         gamePlayed += 1;
                         Swal.fire({
                             title: "Congratulation! You Won!",
-                            text: "Want to play again?",
+                            timer: 2000,
+                            showConfirmButton: false,
+                            allowOutsideClick: false,
+                            timerProgressBar: true,
                             icon: "success",
-                            confirmButtonText: "Yes, Play",
-                            showCancelButton: true,
-                            cancelButtonText: "No",
-                        }).then((play) => {
-                            if (play.isConfirmed) {
-                                document.getElementsByClassName('field')[boxes[0]].classList.remove('win');
-                                document.getElementsByClassName('field')[boxes[1]].classList.remove('win');
-                                document.getElementsByClassName('field')[boxes[2]].classList.remove('win');
-                                gameController.restart();
-
-                            } else {
-                                window.location = '/tictactoe/'
-                            }
                         });
+                        document.getElementsByClassName('field')[boxes[0]].classList.remove('win');
+                        document.getElementsByClassName('field')[boxes[1]].classList.remove('win');
+                        document.getElementsByClassName('field')[boxes[2]].classList.remove('win');
+                        gameController.restart();
                     } else {
                         // when AI wins and human player loses
                         document.getElementsByClassName('field')[boxes[0]].classList.add('lost');
@@ -679,21 +719,16 @@ Tic Tac Toe
                         gamePlayed += 1;
                         Swal.fire({
                             title: "You Lost!",
-                            text: "Want to play again?",
+                            timer: 2000,
+                            showConfirmButton: false,
+                            allowOutsideClick: false,
+                            timerProgressBar: true,
                             icon: "warning",
-                            confirmButtonText: "Yes, Play",
-                            showCancelButton: true,
-                            cancelButtonText: "No",
-                        }).then((play) => {
-                            if (play.isConfirmed) {
-                                document.getElementsByClassName('field')[boxes[0]].classList.remove('lost');
-                                document.getElementsByClassName('field')[boxes[1]].classList.remove('lost');
-                                document.getElementsByClassName('field')[boxes[2]].classList.remove('lost');
-                                gameController.restart();
-                            } else {
-                                window.location = '/tictactoe/'
-                            }
                         });
+                        document.getElementsByClassName('field')[boxes[0]].classList.remove('lost');
+                        document.getElementsByClassName('field')[boxes[1]].classList.remove('lost');
+                        document.getElementsByClassName('field')[boxes[2]].classList.remove('lost');
+                        gameController.restart();
                     }
                 }
             }
@@ -915,26 +950,6 @@ Tic Tac Toe
                 window.location = '/tictactoe/';
             }
         }
-
-        window.onbeforeunload = function () {
-            // before leaving the page save all data
-            // post maxScore
-            $.ajax({
-                url: "/tictactoe/maxscore/",
-                type: 'POST',
-                data: { 'csrfmiddlewaretoken': '{{ csrf_token }}', 'level': '{{ level }}', 'maxScore': maxScore },
-                datatype: 'json',
-                success: function (data) {
-                    console.log(data);
-                },
-                error: function () {
-                    Swal.fire({
-                        text: "Something went wrong!",
-                        icon: "error",
-                    });
-                }
-            });
-        };
     })();
 </script>
 {% endblock %}

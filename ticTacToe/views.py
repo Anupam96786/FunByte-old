@@ -11,12 +11,10 @@ def index(request):
     return render(request, 'ttt_index.html')
 
 
-@login_required
 def single_options(request):
     return render(request, 'ttt_single_options.html')
 
 
-@login_required
 def single_play(request, player_sign, level):
     sign = ['X', 'O']
     l = ['easy', 'medium', 'hard', 'unbeatable']
