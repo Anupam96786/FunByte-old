@@ -39,13 +39,6 @@ Leader Board
                 <div>
                     <h3 class="card-title">Leaderboard</h3>
                 </div>
-                <div class="card-options">
-                    <div class="d-md-flex" id="fulltable">
-                        <a href="#" class="nav-link icon full-screen-link">
-                            <i class="fe fe-minimize"></i>
-                        </a>
-                    </div>
-                </div>
             </div>
             <div class="card-body">
                 <div class="row" style="padding-bottom: 10px; align-self: center; width: 100%; margin: 0px;">
@@ -87,39 +80,6 @@ Leader Board
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
 <script>
-    (() => {
-        $('#fulltable').on('click', function () {
-            // if already full screen; exit
-            // else go fullscreen
-            if (
-                document.fullscreenElement ||
-                document.webkitFullscreenElement ||
-                document.mozFullScreenElement ||
-                document.msFullscreenElement
-            ) {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                } else if (document.mozCancelFullScreen) {
-                    document.mozCancelFullScreen();
-                } else if (document.webkitExitFullscreen) {
-                    document.webkitExitFullscreen();
-                } else if (document.msExitFullscreen) {
-                    document.msExitFullscreen();
-                }
-            } else {
-                element = $('#leaderboard').get(0);
-                if (element.requestFullscreen) {
-                    element.requestFullscreen();
-                } else if (element.mozRequestFullScreen) {
-                    element.mozRequestFullScreen();
-                } else if (element.webkitRequestFullscreen) {
-                    element.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-                } else if (element.msRequestFullscreen) {
-                    element.msRequestFullscreen();
-                }
-            }
-        });
-    })();
 
     window.onload = function () {
         document.getElementById("level").addEventListener("change", getBoard);
@@ -148,7 +108,11 @@ Leader Board
                                 <tr style="background-color: #17d092;">
                                     <td style="padding: 0px;"><div style="font-size: 30px; width: fit-content; align-self: center; margin: 0 auto;">${medal}</div></td>
                                     <td style="color: black;">${i + 1}</td>
-                                    <td style="color: black;">${element["user__username"]}
+                                    <td style="color: black;">
+                                        <a style="color: black;"
+                                            href="/accounts/profile/${element["user__username"]}" class="btn btn-link box-shadow-0 px-0">
+                                            ${element["user__username"]}
+                                        </a>
                                         <button type="button" class="btn btn-warning btn-sm" style="float: right;">
                                             <i class="fe fe-share mr-2"></i>Share
                                         </button>
@@ -161,7 +125,12 @@ Leader Board
                                 <tr>
                                     <td style="padding: 0px;"><div style="font-size: 30px; width: fit-content; align-self: center; margin: 0 auto;">${medal}</div></td>
                                     <td>${i + 1}</td>
-                                    <td>${element["user__username"]}</td>
+                                    <td>
+                                        <a
+                                            href="/accounts/profile/${element["user__username"]}" class="btn btn-link box-shadow-0 px-0">
+                                            ${element["user__username"]}
+                                        </a>
+                                    </td>
                                     <td>${element[document.getElementById('level').value]}</td>
                                 </tr>`;
                         }
@@ -171,7 +140,12 @@ Leader Board
                             <tr>
                                 <td style="padding: 0px;"><div style="font-size: 30px; width: fit-content; align-self: center; margin: 0 auto;">${medal}</div></td>
                                 <td>${i + 1}</td>
-                                <td>${element["user__username"]}</td>
+                                <td>
+                                    <a
+                                        href="/accounts/profile/${element["user__username"]}" class="btn btn-link box-shadow-0 px-0">
+                                        ${element["user__username"]}
+                                    </a>
+                                </td>
                                 <td>${element[document.getElementById('level').value]}</td>
                             </tr>`;
                     }
@@ -181,7 +155,11 @@ Leader Board
                             <tr style="background-color: #17d092;">
                                 <td></td>
                                 <td>${data['userRank']}</td>
-                                <td>${data["userData"]["user__username"]}
+                                <td>
+                                    <a style="color: black;"
+                                        href="/accounts/profile/${data["userData"]["user__username"]}" class="btn btn-link box-shadow-0 px-0">
+                                        ${data["userData"]["user__username"]}
+                                    </a>
                                     <button type="button" class="btn btn-warning btn-sm" style="float: right;">
                                         <i class="fe fe-share mr-2"></i>Share
                                     </button>
