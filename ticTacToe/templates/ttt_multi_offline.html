@@ -235,14 +235,13 @@ Tic Tac Toe
                 }
                 Swal.fire({
                     title: "Its a draw!",
-                    text: "Want to play again?",
+                    timer: 2000,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    timerProgressBar: true,
                     icon: "warning",
-                    showCancelButton: true,
-                }).then((play) => {
-                    if (play.isConfirmed) {
-                        restart();
-                    }
                 });
+                restart();
             }
             if (playerWon()) {
                 await sleep(2000);
@@ -271,18 +270,13 @@ Tic Tac Toe
                 }
                 Swal.fire({
                     title: "Congratulation! Player " + currentPlayer + " Won!",
-                    text: "Want to play again?",
+                    timer: 2000,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    timerProgressBar: true,
                     icon: "success",
-                    confirmButtonText: "Yes, Play",
-                    showCancelButton: true,
-                    cancelButtonText: "No",
-                }).then((play) => {
-                    if (play.isConfirmed) {
-                        restart();
-                    } else {
-                        window.location = '/tictactoe/'
-                    }
                 });
+                restart();
             }
             currentPlayer == "X" ? currentPlayer = "O" : currentPlayer = "X";
             document.getElementById('turn').innerText = currentPlayer;

@@ -39,13 +39,6 @@ Leader Board
                 <div>
                     <h3 class="card-title">Leaderboard</h3>
                 </div>
-                <div class="card-options">
-                    <div class="d-md-flex" id="fulltable">
-                        <a href="#" class="nav-link icon full-screen-link">
-                            <i class="fe fe-minimize"></i>
-                        </a>
-                    </div>
-                </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive" style="height: 100%;">
@@ -76,39 +69,7 @@ Leader Board
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
 <script>
-    (() => {
-        $('#fulltable').on('click', function () {
-            // if already full screen; exit
-            // else go fullscreen
-            if (
-                document.fullscreenElement ||
-                document.webkitFullscreenElement ||
-                document.mozFullScreenElement ||
-                document.msFullscreenElement
-            ) {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                } else if (document.mozCancelFullScreen) {
-                    document.mozCancelFullScreen();
-                } else if (document.webkitExitFullscreen) {
-                    document.webkitExitFullscreen();
-                } else if (document.msExitFullscreen) {
-                    document.msExitFullscreen();
-                }
-            } else {
-                element = $('#leaderboard').get(0);
-                if (element.requestFullscreen) {
-                    element.requestFullscreen();
-                } else if (element.mozRequestFullScreen) {
-                    element.mozRequestFullScreen();
-                } else if (element.webkitRequestFullscreen) {
-                    element.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-                } else if (element.msRequestFullscreen) {
-                    element.msRequestFullscreen();
-                }
-            }
-        });
-    })();
+
     (() => {
         var tableData = '{{ data | safe }}';
         tableData = JSON.parse(tableData);
@@ -125,7 +86,11 @@ Leader Board
                                 <tr style="background-color: #17d092;">
                                     <td style="padding: 0px;"><div style="font-size: 30px; width: fit-content; align-self: center; margin: 0 auto;">${medal}</div></td>
                                     <td style="color: black;">${i + 1}</td>
-                                    <td style="color: black;">${element["user__username"]}
+                                    <td style="color: black;">
+                                        <a style="color: black;"
+                                            href="/accounts/profile/${element["user__username"]}" class="btn btn-link box-shadow-0 px-0">
+                                            ${element["user__username"]}
+                                        </a>
                                         <button type="button" class="btn btn-warning btn-sm" style="float: right;">
                                             <i class="fe fe-share mr-2"></i>Share
                                         </button>
@@ -138,7 +103,12 @@ Leader Board
                                 <tr>
                                     <td style="padding: 0px;"><div style="font-size: 30px; width: fit-content; align-self: center; margin: 0 auto;">${medal}</div></td>
                                     <td>${i + 1}</td>
-                                    <td>${element["user__username"]}</td>
+                                    <td>
+                                        <a
+                                            href="/accounts/profile/${element["user__username"]}" class="btn btn-link box-shadow-0 px-0">
+                                            ${element["user__username"]}
+                                        </a>
+                                    </td>
                                     <td>${element["score"]}</td>
                                 </tr>`;
             }
@@ -149,9 +119,13 @@ Leader Board
                                 <td></td>
                                 <td>{{ userRank | safe }}</td>
                                 <td>{{ userScore.user__username | safe }}
+                                    <a style="color: black;"
+                                        href="/accounts/profile/{{ userScore.user__username | safe }}" class="btn btn-link box-shadow-0 px-0">
+                                        {{ userScore.user__username | safe }}
+                                    </a>
                                     <button type="button" class="btn btn-warning btn-sm" style="float: right;">
-                                            <i class="fe fe-share mr-2"></i>Share
-                                        </button>
+                                        <i class="fe fe-share mr-2"></i>Share
+                                    </button>
                                 </td>
                                 <td>{{ userScore.score | safe }}</td>
                             </tr>` + tableContent.innerHTML;

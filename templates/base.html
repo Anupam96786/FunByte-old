@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="FunBye - One Byte Towards Fun" name="description">
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y0NTWXCXZ8"></script>
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y0NTWXCXZ8"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
@@ -15,7 +15,7 @@
 
         gtag('config', 'G-Y0NTWXCXZ8');
     </script>
-    <script data-ad-client="ca-pub-6472830313130143" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script data-ad-client="ca-pub-6472830313130143" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> -->
     {% load static %}
     <!-- Favicon -->
     <link rel="icon" href="{% static 'images/brand/favicon.ico' %}" type="image/x-icon" />
@@ -113,7 +113,7 @@
                             <div class="dropdown header-profile">
                                 <a class="nav-link pr-0 leading-none d-flex pt-1" data-toggle="dropdown" href="#">
                                     <span class="avatar avatar-md brround cover-image"
-                                        data-image-src="{% static 'images/users/female/2.jpg' %}"></span>
+                                        data-image-src="{% static 'images/users/No-Profile-image.jpg' %}"></span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                                     <div class="drop-heading">
@@ -122,7 +122,7 @@
                                         </div>
                                     </div>
                                     <div class="dropdown-divider m-0"></div>
-                                    <a class="dropdown-item" href="#"><i
+                                    <a class="dropdown-item" href="/accounts/profile/{{ request.user.username }}"><i
                                             class="dropdown-icon fe fe-user"></i>Profile</a>
                                     <a class="dropdown-item" href="/accounts/changepassword/"><i
                                             class="dropdown-icon fe fe-lock"></i>Change Password</a>
@@ -224,6 +224,17 @@
                             {% block page_header %}
                             {% endblock %}
                         </h1>
+                        {% if request.user.is_authenticated %}
+                        {% if not request.user.email %}
+                        <div class="alert alert-warning" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true"
+                                style="padding-left: 15px;">x</button>
+                            Warning — You haven't confirmed your email yet. Go to your <a
+                                href="/accounts/profile/edit/" class="btn btn-link box-shadow-0 px-0">edit
+                                profile</a> page for more info!
+                        </div>
+                        {% endif %}
+                        {% endif %}
                     </div>
                     {% block body %}
                     {% endblock %}

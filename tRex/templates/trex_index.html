@@ -473,23 +473,47 @@ T-Rex
     // Use of this source code is governed by a BSD-style license that can be
     // found in the LICENSE file.
     (function () {
+        // // get all local storage variables
+        // keys = Object.keys(localStorage),
+        //     i = keys.length;
+        // while (i--) {
+        //     console.log(localStorage.getItem(keys[i]));
+        // }
         var maxScore;
-        $.ajax({
-            url: "/trex/maxscore/",
-            type: 'GET',
-            data: { 'csrfmiddlewaretoken': '{{ csrf_token }}' },
-            datatype: 'json',
-            success: function (data) {
-                maxScore = data['maxScore'];
-                document.getElementById('maxscore').innerText = maxScore;
-            },
-            error: function () {
-                Swal.fire({
-                    text: "Something went wrong!",
-                    icon: "error",
-                });
-            }
-        });
+        if ("{{ request.user.is_authenticated }}" == "True") {
+            $.ajax({
+                url: "/trex/maxscore/",
+                type: 'GET',
+                data: { 'csrfmiddlewaretoken': '{{ csrf_token }}' },
+                datatype: 'json',
+                success: function (data) {
+                    maxScore = data['maxScore'];
+                    document.getElementById('maxscore').innerText = maxScore;
+                },
+                error: function () {
+                    Swal.fire({
+                        text: "Something went wrong!",
+                        icon: "error",
+                    });
+                }
+            });
+        } else {
+            maxScore = 0;
+            document.getElementById('maxscore').innerText = maxScore;
+            Swal.fire({
+                title: "Warning!",
+                text: "You are not logged in. So your scores will not be saved. But still you can play.",
+                icon: "warning",
+                confirmButtonText: "Login",
+                showCancelButton: true,
+                cancelButtonText: "Play",
+                allowOutsideClick: false,
+            }).then((login) => {
+                if (login.isConfirmed) {
+                    window.location = '/accounts/login/';
+                }
+            });
+        }
         /**
         * T-Rex runner.
         * @param {string} outerContainerId Outer containing element id.
@@ -1064,21 +1088,23 @@ T-Rex
                     if (maxScore < Math.ceil(this.highestScore / 40)) {
                         maxScore = Math.ceil(this.highestScore / 40);
                         document.getElementById('maxscore').innerText = maxScore;
-                        $.ajax({
-                            url: "/trex/maxscore/",
-                            type: 'POST',
-                            data: { 'csrfmiddlewaretoken': '{{ csrf_token }}', "maxScore": maxScore },
-                            datatype: 'json',
-                            success: function (data) {
-                                console.log(data);
-                            },
-                            error: function () {
-                                Swal.fire({
-                                    text: "Something went wrong!",
-                                    icon: "error",
-                                });
-                            }
-                        });
+                        if ("{{ request.user.is_authenticated }}" == "True") {
+                            $.ajax({
+                                url: "/trex/maxscore/",
+                                type: 'POST',
+                                data: { 'csrfmiddlewaretoken': '{{ csrf_token }}', "maxScore": maxScore },
+                                datatype: 'json',
+                                success: function (data) {
+                                    console.log(data);
+                                },
+                                error: function () {
+                                    Swal.fire({
+                                        text: "Something went wrong!",
+                                        icon: "error",
+                                    });
+                                }
+                            });
+                        }
                     }
                 }
                 // Reset the time clock.

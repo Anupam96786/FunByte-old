@@ -1,0 +1,258 @@
+{% extends 'base.html' %}
+
+{% block title %}
+World Chat
+{% endblock %}
+
+{% load static %}
+
+{% block page_header %}
+World Chat
+{% endblock %}
+
+{% block body %}
+
+<!-- Row -->
+<div class="row">
+    <div class="col-lg-12 col-xl-4 col-md-12 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">My Profile</h3>
+                <div class="card-options">
+                    <a href="/accounts/profile/{{ request.user.username }}" class="btn btn-primary btn-sm"><i
+                            class="si si-eye mr-1"></i>View Profile</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="text-center">
+                    <div class="userprofile ">
+                        <div class="userpic  brround"> <img src="{% static 'images/users/No-Profile-image.jpg' %}" alt=""
+                                class="userpicimg"> </div>
+                        <!-- <div class="text-center">
+                            <a class="btn btn-app btn-primary mr-2 mt-1 mb-1" style="margin: 8px;">
+                                <i class="fe fe-camera mr-1"></i>Change Photo
+                            </a>
+                            <a class="btn btn-app btn-secondary mr-2 mt-1 mb-1" style="margin: 8px;">
+                                <i class="fe fe-camera-off mr-1 mb-2"></i> Remove Photo
+                            </a>
+                        </div> -->
+                        <h3 class="username mb-2">{{ user.first_name }} {{ user.last_name }}</h3>
+                        <h7 class="mt-3 text-white mb-0">@{{ user.username }}</h7><br><br>
+                        <h7 class="mt-3 text-white mb-0">Member since : {{ user.date_joined.date }}</h7>
+                        <div class="socials text-center mt-3">
+                            {% if user.profile.facebook %}
+                            <a href="{{ user.profile.facebook }}" class="btn btn-circle btn-primary" target="blank"><i
+                                    class="fa fa-facebook"></i></a>
+                            {% endif %}
+                            {% if user.profile.instagram %}
+                            <a href="{{ user.profile.instagram }}" class="btn btn-circle btn-danger" target="blank"><i
+                                    class="fa fa-instagram"></i></a>
+                            {% endif %}
+                            {% if user.profile.twitter %}
+                            <a href="{{ user.profile.twitter }}" class="btn btn-circle btn-info" target="blank"><i
+                                    class="fa fa-twitter"></i></a>
+                            {% endif %}
+                            {% if user.profile.youtube %}
+                            <a href="{{ user.profile.youtube }}" class="btn btn-circle btn-danger" target="blank"><i
+                                    class="fa fa-youtube-play"></i></a>
+                            {% endif %}
+                            {% if user.profile.website %}
+                            <a href="{{ user.profile.website }}" class="btn btn-circle btn-warning" target="blank"><i
+                                    class="fa fa-globe"></i></a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="card-footer">
+                <ul class="row text-center clearfix mb-0">
+                    <li class="col-sm-4" style="margin-bottom: 16px;">
+                        <span class="text-dark font-weight-bold">1,345</span>
+                        <p class="text-muted mb-0">
+                            <small>Following</small>
+                        </p>
+                    </li>
+                    <li class="col-sm-4" style="margin-bottom: 16px;">
+                        <span class="text-dark font-weight-bold">23,456</span>
+                        <p class="text-muted mb-0">
+                            <small>Followers</small>
+                        </p>
+                    </li>
+                    <li class="col-sm-4">
+                        <span class="text-dark font-weight-bold">52,678</span>
+                        <p class="text-muted mb-0">
+                            <small>Likes</small>
+                        </p>
+                    </li>
+                </ul>
+            </div> -->
+        </div>
+        {% if request.user.profile.email %}
+        {% if not request.user.email %}
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Profile Details</h3>
+                <div class="card-options">
+                    <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i
+                            class="fe fe-chevron-up"></i></a>
+                    <a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
+                </div>
+            </div>
+            <div class="card-body">
+                You have already added an email, but not verified it yet. Check your inbox, an email verification link
+                already sent to your email when you created your account. If not received any email, then click on <a
+                    href="/accounts/getverificationlink/" class="btn btn-link box-shadow-0 px-0">get verification
+                    link</a> to
+                receive the verification link again. <span style="color: red;">Without email verification your
+                    account may be deleted after {{ days_left }} days.</span>
+            </div>
+        </div>
+        {% endif %}
+        {% else %}
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Profile Details</h3>
+                <div class="card-options">
+                    <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i
+                            class="fe fe-chevron-up"></i></a>
+                    <a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
+                </div>
+            </div>
+            <div class="card-body">
+                You have not added any email yet. Add an email id and verify your email. <span
+                    style="color: red;">Without email verification your
+                    account may be deleted after {{ days_left }} days.</span>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    <div class="col-lg-12 col-xl-8 col-md-12 col-sm-12">
+        <form method="POST" class="card">
+            {% csrf_token %}
+            <div class="card-header">
+                <div>
+                    <h3 class="card-title">Edit Profile</h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-6 col-md-12">
+                        <div class="form-group">
+                            <label for="exampleInputname">First Name</label>
+                            {% if request.user.first_name %}
+                            <input type="text" class="form-control" id="exampleInputname" placeholder="Enter First Name"
+                                value="{{ request.user.first_name }}" name="first_name">
+                            {% else %}
+                            <input type="text" class="form-control" id="exampleInputname" placeholder="Enter First Name"
+                                name="first_name">
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-12">
+                        <div class="form-group">
+                            <label for="exampleInputname1">Last Name</label>
+                            {% if request.user.last_name %}
+                            <input type="text" class="form-control" id="exampleInputname1" placeholder="Enter Last Name"
+                                value="{{ request.user.last_name }}" name="last_name">
+                            {% else %}
+                            <input type="text" class="form-control" id="exampleInputname1" placeholder="Enter Last Name"
+                                name="last_name">
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Email address</label>
+                    {% if request.user.profile.email %}
+                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="email address"
+                        value="{{ request.user.profile.email }}" name="email">
+                    {% if request.user.email %}
+                    <span class="tag tag-rounded"
+                        style="margin-top: 5px; float: right; background-color: green;">Verified</span>
+                    {% else %}
+                    <a href="/accounts/getverificationlink/" class="btn btn-link box-shadow-0 px-0">get verification
+                        link</a>
+                    <span class="tag tag-rounded" style="margin-top: 5px; float: right; background-color: brown;">Not
+                        Verified</span>
+                    {% endif %}
+                    {% else %}
+                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="email address"
+                        name="email">
+                    <span class="tag tag-rounded" style="margin-top: 5px; float: right; background-color: brown;">No
+                        Email</span>
+                    {% endif %}
+                </div>
+                <div class="custom-checkbox custom-control">
+                    <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox2"
+                        name="show_email" {% if request.user.profile.show_email %}checked{% endif %}>
+                    <label for="checkbox2" class="custom-control-label">Show email (email is public if checked)</label>
+                </div>
+                <div class="form-group" style="margin-top: 15px;">
+                    <label class="form-label">Gender</label>
+                    <div class="row gutters-xs">
+                        <div class="col-5">
+                            <select class="form-control custom-select select2" name="gender">
+                                <option {% if not request.user.profile.gender %} selected {% endif %} value="">Not selected</option>
+                                <option {% if request.user.profile.gender == 'Male' %} selected {% endif %} value="Male">Male</option>
+                                <option {% if request.user.profile.gender == 'Female' %} selected {% endif %} value="Female">Female</option>
+                                <option {% if request.user.profile.gender == 'Other' %} selected {% endif %} value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-top: 10px;">
+                    <label class="form-label">About</label>
+                    <textarea class="form-control" rows="6" name="about">{{ request.user.profile.about }}</textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Website</label>
+                    {% if request.user.profile.website %}
+                    <input class="form-control" placeholder="https://testsite.com/" name="website"
+                        value="{{ request.user.profile.website }}">
+                    {% else %}
+                    <input class="form-control" placeholder="Link of your website" name="website">
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Facebook</label>
+                    {% if request.user.profile.facebook %}
+                    <input class="form-control" value="{{ request.user.profile.facebook }}" name="facebook">
+                    {% else %}
+                    <input class="form-control" placeholder="Your facebook profile link" name="facebook">
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Instagram</label>
+                    {% if request.user.profile.instagram %}
+                    <input class="form-control" value="{{ request.user.profile.instagram }}" name="instagram">
+                    {% else %}
+                    <input class="form-control" placeholder="Your instagram profile link" name="instagram">
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Twitter</label>
+                    {% if request.user.profile.twitter %}
+                    <input class="form-control" value="{{ request.user.profile.twitter }}" name="twitter">
+                    {% else %}
+                    <input class="form-control" placeholder="Your twitter profile link" name="twitter">
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Youtube</label>
+                    {% if request.user.profile.youtube %}
+                    <input class="form-control" value="{{ request.user.profile.youtube }}" name="youtube">
+                    {% else %}
+                    <input class="form-control" placeholder="Your youtube channel link" name="youtube">
+                    {% endif %}
+                </div>
+            </div>
+            <div class="card-footer text-right">
+                <button class="btn btn-success mt-1">Save</button>
+                <a href="#" class="btn btn-warning mt-1">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- End Row -->
+
+{% endblock %}

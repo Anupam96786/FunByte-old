@@ -12,7 +12,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/brand/favicon.ico' %}" />
 
     <!-- Title -->
-    <title>Sign Up</title>
+    <title>Mail Verification</title>
 
     <!--Bootstrap css-->
     <link rel="stylesheet" href="{% static 'plugins/bootstrap/css/bootstrap.min.css' %}">
@@ -58,13 +58,10 @@
                                                     class="header-brand-img dark-main-logo" alt="IndoUi logo">
                                             </a>
                                         </div>
-                                        <h3>Almost There...</h3>
-                                        <h5 class="text-muted">Please check your email ({{ email }}) to confirm your
+                                        <h3>Mail Sent...</h3>
+                                        <h5 class="text-muted">Please check your email ({{ email }}) to verify your
                                             account.</h5>
                                         <hr class="message-inner-separator">
-                                        <p class="text-muted">If {{ email }} is not your email address, please <a
-                                                href="/accounts/signup/" class="btn btn-link box-shadow-0 px-0">go
-                                                back</a> and enter the correct one.</p>
                                         <p class="text-muted">If you haven't received our email in 15 minutes, please
                                             check your spam folder.</p>
                                     </div>
