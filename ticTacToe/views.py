@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from rest_framework.decorators import api_view
@@ -28,10 +27,7 @@ def single_play(request, player_sign, level):
 @api_view(['GET', 'POST'])
 def max_score(request):
     if request.method == 'GET':
-        try:
-            return Response(data={'maxScore': getattr(MaxScore.objects.get(user=request.user), request.GET['level'])}, status=status.HTTP_200_OK)
-        except:
-            return Response(data={'maxScore': getattr(MaxScore.objects.create(user=request.user), request.GET['level'])}, status=status.HTTP_200_OK)
+        return Response(data={'maxScore': getattr(MaxScore.objects.get_or_create(user=request.user)[0], request.GET['level'])}, status=status.HTTP_200_OK)
     else:
         try:
             user_score = MaxScore.objects.get(user=request.user)
