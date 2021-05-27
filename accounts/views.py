@@ -74,11 +74,15 @@ def mail_confirmation(request, token):
         token = Token.objects.get(token=token)
         if token.purpose == 'mc':
             user = token.user
-            user.email = Profile.objects.get(user=user).email
-            user.save()
-            token.delete()
-            login(request, user)
-            return redirect('home')
+            if User.objects.filter(email=Profile.objects.get(user=user).email).exists():
+                token.delete()
+                return render(request, 'email_exists.html')
+            else:
+                user.email = Profile.objects.get(user=user).email
+                user.save()
+                token.delete()
+                login(request, user)
+                return redirect('home')
         else:
             return render(request, '400.html')
     except:
@@ -168,19 +172,26 @@ def edit_profile(request):
         user.profile.instagram = request.POST['instagram']
         user.profile.twitter = request.POST['twitter']
         user.profile.youtube = request.POST['youtube']
+        user.save()
+        user.profile.save()
         if request.POST['email'] and user.profile.email != request.POST['email']:
-            user.email = ''
-            user.profile.email = request.POST['email']
-            token = Token.objects.get_or_create(user=request.user, purpose='mc')[0].token
-            domain = get_current_site(request).domain
-            mail_subject = 'Mail Confirmation'
-            mail_body = 'Please click on the link below to confirm your email id.\nIf it is a mistake then don\'t click on the link.\nhttps://{}/accounts/mailconfirmation/{}'.format(domain, token)
-            EmailMessage(mail_subject, mail_body, to=[request.user.profile.email]).send()
+            if User.objects.filter(email=request.POST['email']).exists():
+                return render(request, 'edit_profile.html', {'emessage': 'This email is already registered.'})
+            else:
+                user.email = ''
+                user.profile.email = request.POST['email']
+                user.save()
+                user.profile.save()
+                token = Token.objects.get_or_create(user=request.user, purpose='mc')[0].token
+                domain = get_current_site(request).domain
+                mail_subject = 'Mail Confirmation'
+                mail_body = 'Please click on the link below to confirm your email id.\nIf it is a mistake then don\'t click on the link.\nhttps://{}/accounts/mailconfirmation/{}'.format(domain, token)
+                EmailMessage(mail_subject, mail_body, to=[request.user.profile.email]).send()
         elif not request.POST['email']:
             user.email = ''
             user.profile.email = request.POST['email']
-        user.save()
-        user.profile.save()
+            user.save()
+            user.profile.save()
         return redirect('edit_profile')
 
 
