@@ -26,8 +26,8 @@ World Chat
             <div class="card-body">
                 <div class="text-center">
                     <div class="userprofile ">
-                        <div class="userpic  brround"> <img src="{% static 'images/users/No-Profile-image.jpg' %}" alt=""
-                                class="userpicimg"> </div>
+                        <div class="userpic  brround"> <img src="{% static 'images/users/No-Profile-image.jpg' %}"
+                                alt="" class="userpicimg"> </div>
                         <!-- <div class="text-center">
                             <a class="btn btn-app btn-primary mr-2 mt-1 mb-1" style="margin: 8px;">
                                 <i class="fe fe-camera mr-1"></i>Change Photo
@@ -170,10 +170,10 @@ World Chat
                     <span class="tag tag-rounded"
                         style="margin-top: 5px; float: right; background-color: green;">Verified</span>
                     {% else %}
-                    <a href="/accounts/getverificationlink/" class="btn btn-link box-shadow-0 px-0">get verification
-                        link</a>
                     <span class="tag tag-rounded" style="margin-top: 5px; float: right; background-color: brown;">Not
                         Verified</span>
+                    <a href="/accounts/getverificationlink/" class="btn btn-link box-shadow-0 px-0">get verification
+                        link</a>
                     {% endif %}
                     {% else %}
                     <input type="email" class="form-control" id="exampleInputEmail1" placeholder="email address"
@@ -181,21 +181,31 @@ World Chat
                     <span class="tag tag-rounded" style="margin-top: 5px; float: right; background-color: brown;">No
                         Email</span>
                     {% endif %}
+                    {% if emessage %}
+                    <p style="color: rgb(255, 52, 52); width: fit-content; margin-right: 0px;">{{ emessage }}<a
+                            href="/accounts/forgotpassword/" class="btn btn-link box-shadow-0 px-0">Forgot
+                            password?</a><a href="/accounts/login/" style="margin-left: 5px;"
+                            class="btn btn-link box-shadow-0 px-0">Login?</a></p>
+                    {% endif %}
                 </div>
-                <div class="custom-checkbox custom-control">
-                    <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox2"
-                        name="show_email" {% if request.user.profile.show_email %}checked{% endif %}>
-                    <label for="checkbox2" class="custom-control-label">Show email (email is public if checked)</label>
-                </div>
+                <label class="custom-control custom-checkbox">
+                    <input type="checkbox"    class="custom-control-input" name="show_email" data-checkboxes="mygroup"
+                    {% if request.user.profile.show_email %}checked{% endif %} id="checkbox2">
+                    <span class="custom-control-label">Show email (email is public if checked)</span>
+                </label>
                 <div class="form-group" style="margin-top: 15px;">
                     <label class="form-label">Gender</label>
                     <div class="row gutters-xs">
                         <div class="col-5">
                             <select class="form-control custom-select select2" name="gender">
-                                <option {% if not request.user.profile.gender %} selected {% endif %} value="">Not selected</option>
-                                <option {% if request.user.profile.gender == 'Male' %} selected {% endif %} value="Male">Male</option>
-                                <option {% if request.user.profile.gender == 'Female' %} selected {% endif %} value="Female">Female</option>
-                                <option {% if request.user.profile.gender == 'Other' %} selected {% endif %} value="Other">Other</option>
+                                <option {% if not request.user.profile.gender %} selected {% endif %} value="">Not
+                                    selected</option>
+                                <option {% if request.user.profile.gender == 'Male' %} selected {% endif %} value="Male">
+                                    Male</option>
+                                <option {% if request.user.profile.gender == 'Female' %} selected {% endif %}
+                                    value="Female">Female</option>
+                                <option {% if request.user.profile.gender == 'Other' %} selected {% endif %}
+                                    value="Other">Other</option>
                             </select>
                         </div>
                     </div>
