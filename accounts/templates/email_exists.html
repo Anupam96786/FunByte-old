@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="FunBye - One Byte Towards Fun" name="description">
+    {% load static %}
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'images/brand/favicon.ico' %}" type="image/x-icon" />
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/brand/favicon.ico' %}" />
+
+    <!-- Title -->
+    <title>Mail Verification</title>
+
+    <!--Bootstrap css-->
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap/css/bootstrap.min.css' %}">
+
+    <!--Style css -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/dark-style.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/skin-modes.css' %}" rel="stylesheet">
+
+    <!-- Sidemenu css -->
+    <link href="{% static 'plugins/sidemenu/sidemenu.css' %}" rel="stylesheet" />
+
+    <!--Daterangepicker css-->
+    <link href="{% static 'plugins/bootstrap-daterangepicker/daterangepicker.css' %}" rel="stylesheet" />
+
+    <!-- Rightsidebar css -->
+    <link href="{% static 'plugins/sidebar/sidebar.css' %}" rel="stylesheet">
+
+    <!---Icons css-->
+    <link href="{% static 'css/icons.css' %}" rel="stylesheet" />
+
+</head>
+
+<body class="bg-account dark-mode">
+
+    <!-- page -->
+    <div class="page">
+
+        <!-- page-content -->
+        <div class="page-content">
+            <div class="container text-center text-dark">
+                <div class="row">
+                    <div class="col-lg-4 d-block mx-auto">
+                        <div class="row">
+                            <div class="col-xl-12 col-md-12 col-md-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="text-center mb-6">
+                                            <a href="/">
+                                                <img src="{% static 'images/brand/logo.png' %}"
+                                                    class="header-brand-img main-logo" alt="IndoUi logo">
+                                                <img src="{% static 'images/brand/logo-light.png' %}"
+                                                    class="header-brand-img dark-main-logo" alt="IndoUi logo">
+                                            </a>
+                                        </div>
+                                        <h3>Email already exists...</h3>
+                                        <h5 class="text-muted">An account with this email already exists.<br> <a href="/accounts/forgotpassword/"
+                                            class="btn btn-link box-shadow-0 px-0">Forgot password?</a> <a href="/accounts/login/"
+                                            class="btn btn-link box-shadow-0 px-0">Login?</a></h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- page-content end -->
+
+    </div>
+    <!-- page End-->
+
+    <!-- Jquery js-->
+    <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+
+    <!--Bootstrap.min js-->
+    <script src="{% static 'plugins/bootstrap/js/popper.min.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+
+    <!--Jquery Sparkline js-->
+    <script src="{% static 'js/jquery.sparkline.min.js' %}"></script>
+
+    <!-- Chart Circle js-->
+    <script src="{% static 'js/circle-progress.min.js' %}"></script>
+
+    <!-- Star Rating js-->
+    <script src="{% static 'plugins/rating/jquery.rating-stars.js' %}"></script>
+
+    <!--Moment js-->
+    <script src="{% static 'plugins/moment/moment.min.js' %}"></script>
+
+    <!-- Daterangepicker js-->
+    <script src="{% static 'plugins/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
+
+    <!-- Custom js-->
+    <script src="{% static 'js/custom.js' %}"></script>
+
+</body>
+
+</html>
