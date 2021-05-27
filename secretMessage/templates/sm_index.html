@@ -19,16 +19,10 @@ Secret Message
             <div class="input-group">
                 <input type="text" class="form-control bg-white" id="smurl" readonly>
                 <div class="input-group-append ">
-                    <button type="button" class="btn btn-primary" onclick="copy()">
-                        <i class="fa fa-clone " aria-hidden="true"></i>
+                    <button type="button" class="btn btn-primary" id="share">
+                        <i class="fe fe-share" aria-hidden="true"></i>
                     </button>
                 </div>
-            </div>
-            <div style="padding-top: 5px;">
-                <p style="display: inline; width: fit-content; margin-right: 5px;">Or, </p>
-                <button type="button" class="btn btn-primary btn-sm" style="display: inline;" id="share">
-                    <i class="fe fe-share mr-2"></i>Share
-                </button>
             </div>
         </div>
 
@@ -93,16 +87,6 @@ Secret Message
                     }
                 });
             }
-        });
-    }
-    function copy() {
-        var copyText = document.getElementById("smurl");
-        copyText.select();
-        copyText.setSelectionRange(0, 99999);
-        document.execCommand("copy");
-        Swal.fire({
-            title: "URL copied!",
-            icon: "success",
         });
     }
     (() => {
