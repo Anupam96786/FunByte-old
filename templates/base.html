@@ -131,12 +131,26 @@
                                     <div class="dropdown-divider"></div>
                                     <div class="text-center dropdown-btn pb-3">
                                         <div class="btn-list">
-                                            <a href="#" class="btn btn-icon btn-facebook btn-sm"><i
-                                                    class="icon icon-social-facebook"></i></a>
-                                            <a href="#" class="btn btn-icon btn-twitter btn-sm"><i
-                                                    class="icon icon-social-twitter"></i></a>
-                                            <a href="#" class="btn btn-icon btn-instagram btn-sm"><i
-                                                    class="icon icon-social-instagram"></i></a>
+                                            {% if user.profile.facebook %}
+                                            <a href="{{ user.profile.facebook }}" class="btn btn-circle btn-primary"
+                                                target="blank"><i class="fa fa-facebook"></i></a>
+                                            {% endif %}
+                                            {% if user.profile.instagram %}
+                                            <a href="{{ user.profile.instagram }}" class="btn btn-circle btn-danger"
+                                                target="blank"><i class="fa fa-instagram"></i></a>
+                                            {% endif %}
+                                            {% if user.profile.twitter %}
+                                            <a href="{{ user.profile.twitter }}" class="btn btn-circle btn-info"
+                                                target="blank"><i class="fa fa-twitter"></i></a>
+                                            {% endif %}
+                                            {% if user.profile.youtube %}
+                                            <a href="{{ user.profile.youtube }}" class="btn btn-circle btn-danger"
+                                                target="blank"><i class="fa fa-youtube-play"></i></a>
+                                            {% endif %}
+                                            {% if user.profile.website %}
+                                            <a href="{{ user.profile.website }}" class="btn btn-circle btn-warning"
+                                                target="blank"><i class="fa fa-globe"></i></a>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -228,8 +242,8 @@
                         <div class="alert alert-warning" role="alert">
                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true"
                                 style="padding-left: 15px;">x</button>
-                            Warning — You haven't confirmed your email yet. Go to your <a
-                                href="/accounts/profile/edit/" class="btn btn-link box-shadow-0 px-0">edit
+                            Warning — You haven't confirmed your email yet. Go to your <a href="/accounts/profile/edit/"
+                                class="btn btn-link box-shadow-0 px-0">edit
                                 profile</a> page for more info!
                         </div>
                         {% endif %}
