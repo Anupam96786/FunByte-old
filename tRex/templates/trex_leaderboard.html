@@ -139,7 +139,7 @@ Leader Board
                         navigator.share({
                             title: 'Check This Out!',
                             text: 'Check This Out! I have scored {{ userScore.score | safe }} and ranked {{ userRank | safe }} in T-Rex game, can you beat me?',
-                            url: '/trex/'
+                            url: '/trex/leaderboard/{{ request.user.username }}'
                         }).then(() => {
                             console.log('Thanks for sharing!');
                         }).catch(console.error);

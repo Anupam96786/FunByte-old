@@ -75,6 +75,12 @@ def leader_board_score(request):
         }, status=status.HTTP_200_OK)
 
 
+def leader_board_user(request, username, level):
+    db = MaxScore.objects.order_by('-{}'.format(level)).values('user__username', level)
+    user = db.filter(user__username=username)[0]
+    return render(request, 'ttt_leaderboard_user.html', {'rank': list(db).index(user) + 1, 'username': username, 'score': user[level]})
+
+
 @login_required
 def multi_online(request):
     room = UserRoom.objects.get_or_create(user=request.user)
