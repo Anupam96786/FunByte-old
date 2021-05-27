@@ -175,7 +175,7 @@ Leader Board
                             navigator.share({
                                 title: 'Check This Out!',
                                 text: `Check This Out! I have scored ${data["userData"][document.getElementById('level').value]} and ranked ${data['userRank']} in ${document.getElementById('level').value} mode in Tic-Tac-Toe game, can you beat me?`,
-                                url: '/tictactoe/single/'
+                                url: `/tictactoe/leaderboard/{{ request.user.username }}/${document.getElementById('level').value}`
                             }).then(() => {
                                 console.log('Thanks for sharing!');
                             }).catch(console.error);

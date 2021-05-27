@@ -27,7 +27,13 @@ def leader_board(request):
     if request.method == 'GET':
         db = MaxScore.objects.order_by('-score').values('user__username', 'score')
         if request.user.is_authenticated:
-            userScore = MaxScore.objects.filter(user=request.user).values('user__username', 'score')[0]
+            userScore = db.filter(user=request.user)[0]
             return render(request, 'trex_leaderboard.html', {'data': json.dumps(list(db[0:50])), 'userScore': userScore, 'userRank': list(db).index(userScore) + 1})
         else:
             return render(request, 'trex_leaderboard.html', {'data': json.dumps(list(db[0:50])), 'userScore': {}, 'userRank': {}})
+
+
+def leader_board_user(request, username):
+    db = MaxScore.objects.order_by('-score').values('user__username', 'score')
+    user = db.filter(user__username=username)[0]
+    return render(request, 'trex_leaderboard_user.html', {'rank': list(db).index(user) + 1, 'username': username, 'score': user['score']})
